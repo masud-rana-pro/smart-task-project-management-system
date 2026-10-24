@@ -1,6 +1,6 @@
 # Database setup and seed design
 
-M1 provides schema and migration files. PostgreSQL was subsequently observed running and accepting connections. The candidate approved creating only the dedicated smart_task login and smart_task_dev/smart_task_test databases. Administrative credentials are entered locally; database access is not yet verified.
+M1 provides schema and migration files. PostgreSQL was subsequently observed running and accepting connections. The candidate approved creating only the dedicated smart_task login and smart_task_dev/smart_task_test databases. Administrative credentials were entered locally. On 25 October 2026, all three application connection settings authenticated successfully, the initial migration applied to both approved databases, and the database integration test passed.
 
 ## Approved local setup steps
 

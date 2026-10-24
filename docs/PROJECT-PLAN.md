@@ -72,3 +72,7 @@ Deliver source, meaningful real commits, README, migrations and seeds, API docum
 Record AI use as work happens: actual tools, three actual prompts, an actual AI-assisted solution, an actual incorrect/incomplete suggestion, and how it was corrected and verified. Do not invent events or claim AI-generated code was manually authored. Record the candidate's actual decisions, reviews, tests, and explanations separately.
 
 Learning checkpoints: explain request flow, React state, TypeScript types, Express middleware, SQL relationships/migrations, session security, role checks, one API/database operation, and a small feature change.
+
+## 25 October 2026 checkpoint
+
+M1 code and local database verification passed. The candidate provisioned the isolated login/databases and configured credentials locally. Initial migrations applied to smart_task_dev and smart_task_test; eight frontend/backend tests passed with no skips. Desktop/mobile browser tests passed in the previous verification. The candidate authorized commits/pushes to https://github.com/masud-rana-pro/smart-task-project-management-system.git. M2 is proposed in M2-BACKEND-MILESTONE.md and still awaits approval. Hosting deployment is not authorized yet.
