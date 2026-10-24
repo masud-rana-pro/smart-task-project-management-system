@@ -33,7 +33,7 @@ Status: code foundation verified after a clean installation; desktop/mobile brow
 | Playwright Chromium download                      | Failed repeatedly with network resets/DNS errors; cancelled retries                |
 | Browser execution                                 | Passed: desktop and mobile using installed Chrome; no horizontal overflow          |
 | Git exclusions                                    | .env, node_modules, Prisma generated code and build output ignored                 |
-| GitHub CI/deployment                              | Not executed/published                                                             |
+| GitHub CI/deployment                              | GitHub CI passed for 3008dcb; live hosting not deployed                            |
 
 ## Learning checkpoint
 
@@ -42,3 +42,9 @@ An Express app is comparable to a configured Spring web application; server.ts s
 ## Next scope, not yet authorized
 
 M2 implements registration/login/logout, PostgreSQL-backed sessions and CSRF/throttling, Admin/Member API permissions, projects/tasks/filtering/search/pagination, dashboard calculations, in-app notifications, repeatable fictional seeds, OpenAPI and real-database integration coverage. M2 implementation requires the next milestone approval. GitHub commits/pushes to the candidate-provided repository were authorized on 25 October 2026; hosting deployment still requires separate approval.
+
+## GitHub verification on 25 October 2026
+
+Repository: https://github.com/masud-rana-pro/smart-task-project-management-system
+
+Successful foundation CI: https://github.com/masud-rana-pro/smart-task-project-management-system/actions/runs/40119407827 (code revision 3008dcb). Every workflow step passed, including clean installation, real PostgreSQL migrations/tests and desktop/mobile browser tests on Linux. This documentation-only follow-up records that completed run; it does not imply live hosting is deployed.
