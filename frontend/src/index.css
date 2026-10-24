@@ -1,0 +1,21 @@
+:root {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #173344;
+  background: #f5f7f9;
+  font-synthesis: none;
+  line-height: 1.6;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 3px solid #b65c12;
+  outline-offset: 4px;
+}

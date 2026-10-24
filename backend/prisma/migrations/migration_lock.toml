@@ -1,0 +1,2 @@
+# Managed by Prisma Migrate; commit this file with migration history.
+provider = "postgresql"

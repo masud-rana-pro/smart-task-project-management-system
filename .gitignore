@@ -1,0 +1,17 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+*.tsbuildinfo
+backend/src/generated/
+playwright-report/
+test-results/
+tmp/
+backend/.claude/
+backend/.windsurf/
+.idea/
+.DS_Store
+Bright_Mind_Full_Stack_Developer_Assignment.pdf
