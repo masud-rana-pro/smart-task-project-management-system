@@ -11,6 +11,7 @@ playwright-report/
 test-results/
 tmp/
 .local/
+.vercel/
 backend/.claude/
 backend/.windsurf/
 .idea/

@@ -1,6 +1,6 @@
 # M4 verification record
 
-Status: local verification passed on 25 October 2026; the first GitHub CI run failed its desktop pagination workflow on 26 October. A focused correction is under verification. Do not treat CI as passed until its actual run succeeds.
+Status: local verification and GitHub CI passed. The first CI run failed its desktop pagination workflow; the correction in 2754bc8 passed [run 40219897500](https://github.com/masud-rana-pro/smart-task-project-management-system/actions/runs/40219897500) on 26 October 2026.
 
 ## Changes and findings
 
@@ -37,4 +37,4 @@ Tags can move. These are observed build/pull digests, not a promise that a futur
 
 ## Remaining
 
-Final formatting/secret scan, approved commit/push and successful GitHub CI. Live deployment, candidate learning demonstration and complete manual accessibility assessment remain outside this milestone.
+M4 engineering verification is complete. Live deployment and candidate learning demonstration remain outstanding project work. The focused accessibility checks do not replace a complete manual accessibility assessment.

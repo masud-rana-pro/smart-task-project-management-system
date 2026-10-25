@@ -1,0 +1,15 @@
+.git
+.local
+tmp
+docs
+test-results
+playwright-report
+coverage
+**/.env
+**/.env.*
+**/*.pdf
+**/*.eml
+**/*.test.ts
+**/*.test.tsx
+tests
+AGENTS.md

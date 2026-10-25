@@ -1,33 +1,7 @@
 import 'dotenv/config';
-import { pino } from 'pino';
-import { createApp } from './app.js';
-import { parseApplicationEnvironment } from './config.js';
-import { createDatabase } from './db.js';
+import { createRuntime } from './runtime.js';
 
-const config = parseApplicationEnvironment(process.env);
-const logger = pino({
-  level: config.LOG_LEVEL,
-  redact: {
-    paths: [
-      'req.headers.authorization',
-      'req.headers.cookie',
-      'res.headers["set-cookie"]',
-      'password',
-      'sessionSecret',
-    ],
-    censor: '[REDACTED]',
-  },
-});
-const database = createDatabase(config.DATABASE_URL);
-const app = createApp(logger, {
-  ...database,
-  security: {
-    sessionSecret: config.SESSION_SECRET,
-    origin: config.APP_ORIGIN,
-    secure: config.NODE_ENV === 'production',
-    trustProxyHops: config.TRUST_PROXY_HOPS,
-  },
-});
+const { config, logger, database, app } = createRuntime(process.env);
 const server = app.listen(config.PORT, config.HOST, () => {
   logger.info({ port: config.PORT }, 'API listening');
 });

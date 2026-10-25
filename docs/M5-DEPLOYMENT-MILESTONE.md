@@ -1,6 +1,6 @@
 # M5 deployment proposal
 
-Status: candidate approved code/configuration preparation on 26 October, conditional on M4 CI success. That condition remains pending. Neither provider account exists yet. Admin credentials must remain private for direct evaluator sharing. Account creation, provider connections, CLI/package downloads, hosted database changes and publishing each need their concrete separate approval.
+Status: candidate approved code/configuration preparation on 26 October, conditional on M4 CI success; that condition was met by run 40219897500 on 2754bc8. Local @vercel/functions 3.10.3 and Vercel CLI 65.2.0 downloads are separately approved. Neither provider account exists yet. Admin credentials must remain private for direct evaluator sharing. Account creation, provider connections, hosted database changes and publishing each need their concrete separate approval.
 
 ## Proposed deployment
 

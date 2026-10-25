@@ -77,6 +77,8 @@ Open http://127.0.0.1:3001/api/openapi.json for the OpenAPI 3.1 specification, o
 
 See [the container workflow](docs/CONTAINERS.md) for isolated PostgreSQL, automatic migrations, guarded fictional seeds and the compiled web/API at http://127.0.0.1:8080. Credentials stay in an ignored local file. The API/database ports remain private. This loopback HTTP demonstration is separate from live HTTPS deployment.
 
+Deployment configuration is being prepared for a single Vercel origin with Neon PostgreSQL. See [deployment instructions](docs/DEPLOYMENT.md) and [M5 verification](docs/M5-VERIFICATION.md). No public deployment exists yet; account/database/publishing approvals remain separate.
+
 ## Project layout
 
 ```text
