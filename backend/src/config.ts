@@ -21,3 +21,34 @@ export function parseEnvironment(input: NodeJS.ProcessEnv) {
   }
   return result.data;
 }
+
+export function parseApplicationEnvironment(input: NodeJS.ProcessEnv) {
+  const base = parseEnvironment(input);
+  const result = z
+    .object({
+      DATABASE_URL: z.string().url(),
+      SESSION_SECRET: z
+        .string()
+        .min(64)
+        .refine(
+          (value) => !value.startsWith('REPLACE'),
+          'Generate a unique session secret.',
+        ),
+      APP_ORIGIN: z.string().url().default('http://127.0.0.1:5173'),
+      TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(1).default(0),
+    })
+    .safeParse(input);
+  if (!result.success)
+    throw new Error(
+      `Invalid application environment fields: ${result.error.issues.map((issue) => issue.path.join('.')).join(', ')}`,
+    );
+  const origin = new URL(result.data.APP_ORIGIN);
+  if (
+    origin.origin !== result.data.APP_ORIGIN ||
+    (base.NODE_ENV === 'production' && origin.protocol !== 'https:')
+  )
+    throw new Error(
+      'APP_ORIGIN must be an origin without a path and use HTTPS in production.',
+    );
+  return { ...base, ...result.data };
+}

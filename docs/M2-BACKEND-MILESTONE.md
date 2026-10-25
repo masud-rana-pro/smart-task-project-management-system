@@ -1,6 +1,6 @@
 # M2 backend milestone proposal
 
-Status: awaiting candidate approval. No M2 implementation is authorized by this document.
+Status: approved by the candidate after M1 CI passed; implemented and locally verified. See M2-VERIFICATION.md for evidence and remaining delivery checks. No frontend feature implementation or live hosting deployment is authorized by this milestone.
 
 ## Scope and resulting behavior
 

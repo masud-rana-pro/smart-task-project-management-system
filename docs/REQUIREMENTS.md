@@ -1,6 +1,6 @@
 # Requirements and acceptance checklist
 
-Status: planned, not implemented or verified. Source: the supplied two-page assignment and invitation email. User-selected options are identified below.
+Status: M1 foundation verified; M2 backend implemented and locally verified (see M2-VERIFICATION.md). The checklist below describes final acceptance: frontend workflows, charts, containers, deployment and final reports remain pending. API tests alone do not complete UI acceptance. Source: the supplied two-page assignment and invitation email. User-selected options are identified below.
 
 | ID        | Requirement                                           | Acceptance evidence                                                                                    |
 | --------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -13,7 +13,7 @@ Status: planned, not implemented or verified. Source: the supplied two-page assi
 | DATE-01   | Deadlines and invalid-date validation                 | Invalid/calendar edge cases rejected; agreed overdue rule tested                                       |
 | DASH-01   | Projects, tasks, completed, pending, overdue totals   | Counts match seeded database and approved visibility rules                                             |
 | FILTER-01 | Filter project/status/priority/assignee               | Each filter and combined filters work; reset and no-results states                                     |
-| SEARCH-01 | Search interpretation to confirm                      | Section title mentions search; explicit bullet specifies filtering. Recommend title/text search too    |
+| SEARCH-01 | Approved task title/description search                | Case-insensitive text search combines with filters, pagination and sorting                             |
 | DATA-01   | Persistent PostgreSQL and validation                  | Migrations work from empty database; repeatable seed; required fields and authorization checked        |
 | UI-01     | Responsive React UI                                   | Usable desktop/mobile, keyboard navigation, labels, focus and contrast checks                          |
 | BONUS-01  | Admin / Team Member permissions                       | Admin manages all; member access tested against approved matrix                                        |

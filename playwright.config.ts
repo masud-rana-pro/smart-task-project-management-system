@@ -29,7 +29,7 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'npm run dev -w backend',
+      command: 'npm run start -w backend',
       url: 'http://127.0.0.1:3001/api/health',
       reuseExistingServer: !process.env.CI,
     },

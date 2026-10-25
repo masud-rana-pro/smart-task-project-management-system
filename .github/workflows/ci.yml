@@ -31,6 +31,8 @@ jobs:
       DATABASE_URL: postgresql://smart_task_ci:isolated-ci-only@localhost:5432/smart_task_test
       DIRECT_URL: postgresql://smart_task_ci:isolated-ci-only@localhost:5432/smart_task_test
       TEST_DATABASE_URL: postgresql://smart_task_ci:isolated-ci-only@localhost:5432/smart_task_test
+      SESSION_SECRET: isolated-ci-session-secret-not-for-production-0123456789abcdef0123456789abcdef
+      APP_ORIGIN: http://127.0.0.1:5173
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

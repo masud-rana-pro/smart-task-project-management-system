@@ -42,4 +42,5 @@ Build the Bright Mind Smart Task & Project Management System with React/TypeScri
 - Apply existing migrations to an approved isolated target: `npm run db:deploy`.
 - Author a development migration: `npm run db:migrate`; never reset valuable databases.
 - Browser workflow: `npm run test:e2e`; browser binary download is separately approved for M1.
-- Seed implementation is deferred to M2; no working seed command exists in M1.
+- Bootstrap Admin: `npm run admin:create` with locally supplied ADMIN_NAME/ADMIN_EMAIL/ADMIN_PASSWORD. Do not expose those credentials.
+- Guarded non-destructive local demo seed: `npm run db:seed` with an approved isolated target and explicit ALLOW_DEMO_SEED=true. Never enable this in production or reset existing data.

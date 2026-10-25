@@ -30,3 +30,13 @@ The latest form resolver (6.x) produced a real optional-peer conflict between Ef
 Prisma init attempted an additional automatic skills step. Stopped that step, retained only the project database starter, explicitly selected prisma.config.ts in commands, and excluded empty tool-specific agent directories. No global agent settings were changed.
 
 On 25 October 2026, verified local connection URL target restrictions and authentication without displaying credentials. Applied the initial migration to both empty approved databases and reran all frontend/backend tests: eight passed, zero skipped. The candidate supplied the GitHub repository and authorized appropriate commits/pushes. No credentials were added to version control.
+
+## M2 implementation, 25 October 2026
+
+The candidate approved M2 after foundation CI passed and then requested continuation. Codex implemented the authentication, sessions, validation, role-protected APIs, dashboard calculations, notifications, guarded seed/Admin CLI, API documentation and PostgreSQL tests. The candidate provisioned the isolated database role/databases locally and selected the business rules; no claim is made that the candidate manually wrote this generated implementation.
+
+Reviewed password hashing against the OWASP Password Storage Cheat Sheet and session behavior against express-session documentation. Used Node scrypt with per-password salts, database-backed sessions and shared atomic login counters. Runtime/session pools share a bounded PostgreSQL pool.
+
+Actual correction: applying defaults to a partially optional Zod task schema could reset omitted PATCH fields. Split create defaults from update fields and added a regression test. Fixed TypeScript strict optional-field handling and Express request augmentation after lint/type checks reported problems. Playwright's Windows development watcher startup stalled; changed E2E startup to the compiled API and verified both fresh-start browser profiles successfully.
+
+Actual results: full formatting/lint/type/test/build pipeline passed with 24 unit/API tests (22 backend and 2 frontend), zero skips; two foundation browser tests passed using installed Chrome. An authenticated compiled-server dashboard check matched direct database counts. Guarded seed reruns preserved records/password hashes, and missing opt-in was rejected without changes. See M2-VERIFICATION.md. Feature frontend and deployment validation remain future work.

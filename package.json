@@ -10,12 +10,14 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "npm run test --workspaces",
-    "test:e2e": "playwright test",
+    "test:e2e": "npm run build -w backend && playwright test",
     "db:generate": "npm run db:generate -w backend",
     "db:validate": "npm run db:validate -w backend",
     "db:migrate": "npm run db:migrate -w backend",
     "db:deploy": "npm run db:deploy -w backend",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build",
+    "admin:create": "npm run admin:create -w backend",
+    "db:seed": "npm run db:seed -w backend"
   },
   "workspaces": [
     "frontend",

@@ -16,11 +16,11 @@ Using a local text editor, configure backend/.env from backend/.env.example with
 
 Once configuration is complete, run the approved migration/check commands or let the agent execute them without printing the URLs. backend scripts load backend/.env. Database tests must load that file as well; otherwise a configured TEST_DATABASE_URL in the file would not reach the test process.
 
-## Planned local provisioning
+## Local provisioning decisions
 
 After explicit approval of the isolated targets, create a dedicated non-superuser project login and databases `smart_task_dev` and `smart_task_test`, owned by that login. Use PostgreSQL 17 initially. Have the candidate enter credentials locally through an administrative database tool. Never reuse unrelated application databases, commit credentials or modify global server authentication settings.
 
-Run migrations with a direct connection to the target. For hosted PostgreSQL, use an appropriate bounded pooled connection for runtime access. Both Prisma and connect-pg-simple pools must fit the hosting connection budget. Runtime session/auth persistence is M2 work.
+Run migrations with a direct connection to the target. For hosted PostgreSQL, use an appropriate bounded pooled connection for runtime access. Prisma and connect-pg-simple share one bounded pool per API instance in M2. Hosting connection limits still need verification.
 
 ## Initial schema intent
 
@@ -28,9 +28,9 @@ Users have unique normalized email and an Admin/Team Member role. Projects refer
 
 Migration SQL is generated from the schema using `prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script`, then reviewed and committed. Generation/validation alone does not prove it runs on PostgreSQL. CI creates an isolated PostgreSQL service and tests table creation and deletion restrictions; local execution requires access and target approval.
 
-## Seed/admin setup design
+## Implemented M2 seed/admin setup
 
-The seed implementation belongs with M2, when password hashing and authentication are implemented and can be tested together. It will:
+M2 implements and locally verifies the seed together with the login password hashing. It:
 
 1. Require an explicit opt-in and an isolated development/demo target.
 2. Use fictional example.invalid accounts, one Admin and at least two members.
@@ -39,4 +39,4 @@ The seed implementation belongs with M2, when password hashing and authenticatio
 5. Upsert stable sample projects and tasks covering statuses, priorities, due today, future deadlines and overdue deadlines.
 6. Refuse destructive reseeding and document how to rerun safely.
 
-No working seed command or public Admin-creation endpoint is claimed in M1. Public demo access policy needs separate deployment approval.
+Use `npm run admin:create` with locally supplied ADMIN_NAME, ADMIN_EMAIL and ADMIN_PASSWORD to provision an Admin. Use `npm run db:seed` with those fields, DEMO_MEMBER_PASSWORD and explicit ALLOW_DEMO_SEED=true for the approved local demo database. Placeholder passwords are rejected; existing account passwords are preserved. The seed allows only local smart_task_dev/smart_task_test targets and refuses production. See README.md for PowerShell steps. There is no public Admin-creation endpoint. Public demo access policy needs separate deployment approval.
