@@ -16,7 +16,7 @@ Source PDF: C:\Users\masud\Downloads\Bright_Mind_Full_Stack_Developer_Assignment
 - One repository with separate frontend and backend folders.
 - Admin manages all projects and tasks. Members see all projects/tasks and can change only the status of their assigned tasks.
 - TypeScript is approved for both frontend and backend.
-- Proposed GitHub repository name is approved: smart-task-project-management-system; visibility: public. Repository creation/publishing is not yet approved.
+- GitHub repository: smart-task-project-management-system; visibility: public. The candidate supplied the repository and authorized appropriate commits/pushes. Live application publishing requires separate approval.
 - Task deadlines are calendar dates, due through the end of that day in Asia/Dhaka. Past dates are allowed to represent overdue work. Completed tasks are never overdue.
 - Block project deletion while it contains tasks; tasks must first be deleted or moved.
 - Synchronize overdue notifications when the app opens/refreshes and while active; persist read state and deduplicate by task/deadline. No offline push alerts.
@@ -27,9 +27,9 @@ Source PDF: C:\Users\masud\Downloads\Bright_Mind_Full_Stack_Developer_Assignment
 - Obtain approval for each implementation milestone; installations and publishing need separate approval.
 - Planning documents and read-only environment/research work are approved.
 
-## Proposed architecture, awaiting approval
+## Approved architecture and original planning record
 
-Approval update: the user approved the proposed architecture and listed libraries, including React/Vite, Express, Prisma/PostgreSQL, database-backed cookie sessions, and unit/API/browser testing. The root AGENTS.md is activated with explicit approval. Local development will initially use installed PostgreSQL 17; Docker verification is separate. Application implementation, package installation, service starts and Git operations are not yet approved.
+Approval update: the user approved the proposed architecture and listed libraries, including React/Vite, Express, Prisma/PostgreSQL, database-backed cookie sessions, and unit/API/browser testing. The root AGENTS.md is activated with explicit approval. Local development uses installed PostgreSQL 17. M1-M4 implementation, scoped dependency installation, service starts and Git operations were subsequently approved; see their milestone records. Hosting remains a separate gate.
 
 Additional approved rules: pending = To Do + In Progress; members receive their assigned overdue task notices and Admins receive all; current overdue lists exclude completed/rescheduled tasks while read state persists for unchanged task/deadline. Task title/description search, pagination and sorting are included.
 
@@ -76,3 +76,7 @@ Learning checkpoints: explain request flow, React state, TypeScript types, Expre
 ## 25 October 2026 checkpoint
 
 M1 and M2 passed local checks and GitHub CI. The candidate provisioned the isolated login/databases and configured credentials locally. The candidate approved M3 conditional on M2 CI passing; that condition was met for commit 5d1d68e. M3 now has 28 passing unit/API tests and eight passing local desktop/mobile browser workflows; final M3 verification and GitHub CI evidence are recorded separately. The candidate authorized commits/pushes to https://github.com/masud-rana-pro/smart-task-project-management-system.git. Hosting deployment is not authorized yet.
+
+## 26 October 2026 checkpoint
+
+M3 CI succeeded. Approved M4 changes were locally verified with 35 passing unit/API tests, eight passing browser workflows and successful isolated container migration, seed and authenticated browser smoke checks, then pushed as 957046a. GitHub CI status is tracked in M4-VERIFICATION.md. M5 deployment preparation is proposed in M5-DEPLOYMENT-MILESTONE.md and awaits approval; account actions, additional installations and live publishing remain separate gates. Candidate learning demonstration and final submission documents remain outstanding.

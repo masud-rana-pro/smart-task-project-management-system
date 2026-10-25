@@ -45,6 +45,8 @@ test('Task search, combined filters, sorting, pagination and empty reset work to
     .getByRole('combobox', { name: 'Sort by' })
     .selectOption('title:asc');
   await expect(page.getByText('Page 1 of 2', { exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/search=Pagination\+step/);
+  await expect(page).toHaveURL(/sortBy=title/);
   await expect(
     page.getByRole('button', { name: 'Pagination step 01', exact: true }),
   ).toBeVisible();

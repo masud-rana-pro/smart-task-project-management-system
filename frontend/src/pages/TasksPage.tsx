@@ -26,6 +26,7 @@ export default function TasksPage() {
   const admin = user?.role === 'ADMIN';
   const client = useQueryClient();
   const [params, setParams] = useSearchParams();
+  const latestParams = useRef(params);
   const searchParam = params.get('search') ?? '';
   const searchInput = useRef<HTMLInputElement>(null);
   const searchTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -51,17 +52,20 @@ export default function TasksPage() {
     queryFn: () => api<TaskList>('/tasks?' + query),
   });
   useEffect(() => {
+    latestParams.current = params;
+  }, [params]);
+  useEffect(() => {
     if (searchInput.current) searchInput.current.value = searchParam;
   }, [searchParam]);
   useEffect(() => () => clearTimeout(searchTimer.current), []);
   function filter(key: string, value: string) {
-    setParams((previous) => {
-      const next = new URLSearchParams(previous);
-      if (value) next.set(key, value);
-      else next.delete(key);
-      next.delete('page');
-      return next;
-    });
+    const next = new URLSearchParams(latestParams.current);
+    if ((next.get(key) ?? '') === value) return;
+    if (value) next.set(key, value);
+    else next.delete(key);
+    next.delete('page');
+    latestParams.current = next;
+    setParams(next);
   }
   const status = useMutation({
     mutationFn: ({ id, value }: { id: string; value: Status }) =>

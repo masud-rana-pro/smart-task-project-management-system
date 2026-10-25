@@ -1,6 +1,6 @@
 # M4 verification record
 
-Status: local verification passed on 25 October 2026; GitHub CI is pending. Do not treat CI as passed until its actual run succeeds.
+Status: local verification passed on 25 October 2026; the first GitHub CI run failed its desktop pagination workflow on 26 October. A focused correction is under verification. Do not treat CI as passed until its actual run succeeds.
 
 ## Changes and findings
 
@@ -24,6 +24,8 @@ Status: local verification passed on 25 October 2026; GitHub CI is pending. Do n
 - Sequential npm run check: passed, including 8 frontend and 27 backend tests with no skips, lint, formatting, type checks and both builds.
 - Next browser run: 7 passed; the first dashboard lazy-load still exceeded the five-second heading assertion. Changed only the post-login heading allowance to 15 seconds for cold development startup; final full rerun pending.
 - Final full browser rerun: 8 passed in 2.6 minutes using installed Chrome, exit code 0. Admin/member CRUD/permission workflows, search/filter/pagination, notifications, registration, skip navigation, dialog entry/restored focus and focused text-contrast checks passed. Desktop/mobile overview screenshots were visually reviewed after the color corrections.
+- First CI run for 957046a: schema/migration/full code checks passed; seven browser cases passed, desktop pagination failed after all retries. The test could click Next while search was still debouncing because unfiltered data also had two pages. It now waits for the intended search and sorting URL before pagination. The search callback also reads current URL filters and ignores unchanged values so a delayed callback cannot restore an older filter snapshot or reset a page for a no-op search.
+- Correction verification: both desktop/mobile pagination workflows passed locally; all 35 unit/API tests passed again. Full code-check completion and the next CI result are recorded after execution.
 
 ## Images observed
 
