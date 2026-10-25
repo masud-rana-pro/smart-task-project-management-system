@@ -10,12 +10,18 @@ async function main() {
   if (!seed && process.argv[2] !== 'admin')
     throw new Error('Use admin or seed');
   const target = new URL(process.env.DATABASE_URL);
+  const localTarget =
+    target.hostname === '127.0.0.1' &&
+    ['/smart_task_dev', '/smart_task_test'].includes(target.pathname);
+  const containerTarget =
+    target.hostname === 'db' &&
+    target.pathname === '/smart_task_demo' &&
+    process.env.ALLOW_CONTAINER_DEMO_SEED === 'true';
   if (
     seed &&
     (process.env.ALLOW_DEMO_SEED !== 'true' ||
       process.env.NODE_ENV === 'production' ||
-      target.hostname !== '127.0.0.1' ||
-      !['/smart_task_dev', '/smart_task_test'].includes(target.pathname))
+      (!localTarget && !containerTarget))
   ) {
     throw new Error(
       'Demo seed requires explicit opt-in and an isolated local smart_task database',

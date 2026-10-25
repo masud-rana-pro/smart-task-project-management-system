@@ -68,7 +68,7 @@ export default function AuthPage({
     <main id="main" tabIndex={-1} className="auth-layout">
       <section className="auth-story">
         <Link to="/login" className="brand">
-          <span className="brand-mark">
+          <span className="brand-mark" aria-hidden="true">
             st<span>•</span>
           </span>
           smart task<span className="brand-dot">.</span>

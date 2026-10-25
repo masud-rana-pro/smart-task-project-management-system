@@ -91,6 +91,22 @@ function operation(
     },
   };
 }
+paths['/api/ready'] = {
+  get: {
+    summary: 'Database readiness check',
+    security: [],
+    responses: {
+      '200': {
+        description: 'Database reachable',
+        content: json(object({ status: { const: 'ready' } }, ['status'])),
+      },
+      '503': {
+        description: 'Database unavailable',
+        content: json(object({ status: { const: 'unavailable' } }, ['status'])),
+      },
+    },
+  },
+};
 operation(
   '/api/health',
   'get',

@@ -38,7 +38,7 @@ export default function NotificationsPage() {
         <Alert error={notices.error ?? read.error} />
         {notices.isPending ? (
           <Loading />
-        ) : !notices.data?.notifications.length ? (
+        ) : !notices.data ? null : !notices.data.notifications.length ? (
           <Empty title="You’re all caught up">
             No overdue notifications right now. A good place to be.
           </Empty>

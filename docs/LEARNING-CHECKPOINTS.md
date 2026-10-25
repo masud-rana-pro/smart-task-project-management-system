@@ -25,3 +25,11 @@ Explain why a deadline is a PostgreSQL DATE and not a timestamp, why Bangladesh 
 ## Demonstration exercise
 
 Using fictional data: create a project and task as Admin; filter for its assignee; sign in as that member; change the assigned status; explain the resulting dashboard/notification changes. Point to the corresponding API request and database row. Practice explaining a small label/validation change and rerun the relevant checks.
+
+## M4 container and security checkpoint
+
+Explain the difference between liveness and database readiness, why startup waits for migrations, and why an application database login should not be a superuser. A container image resembles a packaged Java application plus its runtime; Compose coordinates its database, migration job, API and static web server.
+
+Explain how the browser reaches Nginx on loopback, how Nginx reaches the private API, and why production HTTPS requires Secure cookies. Describe read-only filesystems, temporary directories, non-root users and why secrets must stay outside images/Git. Explain why a passing contrast check is useful but does not prove complete accessibility compliance.
+
+Candidate demonstration remains pending; these prompts do not claim the candidate has already explained the implementation.

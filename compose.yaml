@@ -1,0 +1,108 @@
+name: smart-task-demo
+
+x-database-url: &database-url postgresql://smart_task:${CONTAINER_DB_PASSWORD:?Generate private container configuration}@db:5432/smart_task_demo
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: smart_task_demo
+      POSTGRES_PASSWORD: ${CONTAINER_POSTGRES_PASSWORD:?Generate private container configuration}
+      APP_DB_PASSWORD: ${CONTAINER_DB_PASSWORD:?Generate private container configuration}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-database.sql:/docker-entrypoint-initdb.d/10-application-role.sql:ro
+    networks: [internal]
+    healthcheck:
+      test:
+        [CMD-SHELL, 'pg_isready -h 127.0.0.1 -U smart_task -d smart_task_demo']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    mem_limit: 512m
+    restart: unless-stopped
+
+  migrate:
+    image: smart-task-migrate:local
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: migrate
+    environment:
+      DATABASE_URL: *database-url
+      DIRECT_URL: *database-url
+    depends_on:
+      db: { condition: service_healthy }
+    networks: [internal]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    mem_limit: 1g
+
+  api:
+    image: smart-task-api:local
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: runtime
+    environment:
+      # Loopback-only HTTP demonstration. HTTPS deployments must use production.
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 3001
+      DATABASE_URL: *database-url
+      SESSION_SECRET: ${CONTAINER_SESSION_SECRET:?Generate private container configuration}
+      APP_ORIGIN: http://127.0.0.1:8080
+      TRUST_PROXY_HOPS: 1
+    depends_on:
+      db: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+    networks: [internal]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    mem_limit: 1g
+    restart: unless-stopped
+
+  web:
+    image: smart-task-web:local
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports: ['127.0.0.1:8080:8080']
+    depends_on:
+      api: { condition: service_healthy }
+    networks: [internal, web_access]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    mem_limit: 128m
+    restart: unless-stopped
+
+  seed:
+    profiles: [tools]
+    image: smart-task-migrate:local
+    command: [node, backend/dist/cli.js, seed]
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: *database-url
+      ALLOW_DEMO_SEED: 'true'
+      ALLOW_CONTAINER_DEMO_SEED: 'true'
+      ADMIN_NAME: Container Demo Admin
+      ADMIN_EMAIL: admin@example.invalid
+      ADMIN_PASSWORD: ${CONTAINER_ADMIN_PASSWORD:?Generate private container configuration}
+      DEMO_MEMBER_PASSWORD: ${CONTAINER_MEMBER_PASSWORD:?Generate private container configuration}
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    networks: [internal]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    mem_limit: 1g
+
+networks:
+  internal: { internal: true }
+  web_access: { driver: bridge }
+volumes:
+  postgres_data:

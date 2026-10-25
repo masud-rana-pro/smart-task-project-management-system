@@ -29,7 +29,7 @@ function AuthenticatedWorkspace() {
     <div className="app-shell">
       <aside className="sidebar">
         <NavLink to="/" className="brand" aria-label="Smart Task home">
-          <span className="brand-mark">
+          <span className="brand-mark" aria-hidden="true">
             st<span>•</span>
           </span>
           smart task<span className="brand-dot">.</span>

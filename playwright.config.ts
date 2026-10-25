@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import { config } from 'dotenv';
+import { randomBytes } from 'node:crypto';
 
 config({ path: 'backend/.env', quiet: true });
 const testDatabase = process.env.TEST_DATABASE_URL;
@@ -43,7 +44,15 @@ export default defineConfig({
       command: 'npm run start -w backend',
       url: 'http://127.0.0.1:3001/api/health',
       reuseExistingServer: false,
-      env: { DATABASE_URL: testDatabase },
+      env: {
+        DATABASE_URL: testDatabase,
+        SESSION_SECRET: randomBytes(32).toString('hex'),
+        NODE_ENV: 'test',
+        APP_ORIGIN: 'http://127.0.0.1:5173',
+        HOST: '127.0.0.1',
+        PORT: '3001',
+        TRUST_PROXY_HOPS: '0',
+      },
     },
     {
       command: 'npm run dev -w frontend',

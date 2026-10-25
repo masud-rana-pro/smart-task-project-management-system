@@ -2,13 +2,13 @@
 
 A React/TypeScript and Node/Express task-management assessment prototype with PostgreSQL persistence.
 
-**Current milestone: M3 frontend.** The React interface and API implement registration/login/logout, PostgreSQL sessions, Admin/Team Member permissions, project/task CRUD, filtering/search/pagination, dashboard/progress charts and in-app overdue notifications. Desktop and mobile browser workflows are verified locally. Container verification, live hosting and final submission documents remain upcoming milestones. This is not yet the completed assignment.
+**Current milestone: M4 hardening and containers.** The React interface and API implement registration/login/logout, PostgreSQL sessions, Admin/Team Member permissions, project/task CRUD, filtering/search/pagination, dashboard/progress charts and in-app overdue notifications. The isolated container build, migrations, seed and authenticated browser smoke checks passed locally. See the milestone verification records for detailed results and remaining checks. Live hosting and final submission documents remain upcoming milestones. This is not yet the completed assignment.
 
 ## Prerequisites
 
 - Node.js 24.16.x and npm 11.x (project uses npm workspaces).
 - PostgreSQL 17 for persistence and migration verification.
-- Git. Docker is planned as a separate bonus deliverable.
+- Git. Docker Desktop/Engine with Compose is optional for the container workflow.
 
 ## Install and run
 
@@ -71,7 +71,11 @@ If the browser download is unavailable, Playwright can use an already-installed 
 
 Open http://127.0.0.1:3001/api/openapi.json for the OpenAPI 3.1 specification, or see the [API walkthrough](docs/API.md). Get a CSRF token and session cookie before login/registration; send the matching Origin and X-CSRF-Token on mutations. Login rotates both session and token. Browser API calls should use the frontend's same-origin proxy.
 
-`GET /api/health` returns `200 { "status": "ok" }`; it reports only liveness. Errors use `{ "error": { "code": "...", "message": "...", "fields": [] } }` (fields is optional). Invalid inputs return 400; unauthenticated/forbidden access 401/403; missing/conflicting records 404/409; oversized payloads 413; throttled authentication 429.
+`GET /api/health` returns `200 { "status": "ok" }`; it reports only liveness. `GET /api/ready` queries PostgreSQL and returns 200 when ready or 503 when unavailable. Errors use `{ "error": { "code": "...", "message": "...", "fields": [] } }` (fields is optional). Invalid inputs return 400; unauthenticated/forbidden access 401/403; missing/conflicting records 404/409; oversized payloads 413; throttled authentication 429.
+
+## Local containers
+
+See [the container workflow](docs/CONTAINERS.md) for isolated PostgreSQL, automatic migrations, guarded fictional seeds and the compiled web/API at http://127.0.0.1:8080. Credentials stay in an ignored local file. The API/database ports remain private. This loopback HTTP demonstration is separate from live HTTPS deployment.
 
 ## Project layout
 

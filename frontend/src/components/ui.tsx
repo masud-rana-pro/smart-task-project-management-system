@@ -71,8 +71,17 @@ export function Modal({
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const dialog = ref.current!;
+    const previousFocus = document.activeElement;
     dialog.showModal();
-    return () => dialog.close();
+    (
+      dialog.querySelector<HTMLElement>('input, textarea, select') ??
+      dialog.querySelector<HTMLElement>('button')
+    )?.focus();
+    return () => {
+      dialog.close();
+      if (previousFocus instanceof HTMLElement && previousFocus.isConnected)
+        previousFocus.focus();
+    };
   }, []);
   return (
     <dialog ref={ref} onCancel={onClose} aria-labelledby="modal-title">

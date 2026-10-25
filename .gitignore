@@ -10,6 +10,7 @@ backend/src/generated/
 playwright-report/
 test-results/
 tmp/
+.local/
 backend/.claude/
 backend/.windsurf/
 .idea/

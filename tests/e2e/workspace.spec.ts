@@ -1,5 +1,6 @@
 import { test, expect } from './fixtures';
 import type { Page } from '@playwright/test';
+import { expectReadableContrast } from './accessibility';
 
 test('Task search, combined filters, sorting, pagination and empty reset work together', async ({
   page,
@@ -71,7 +72,8 @@ async function login(page: Page, email: string, password: string) {
   await page.getByRole('button', { name: 'Sign in to workspace' }).click();
   await expect(
     page.getByRole('heading', { name: 'Hello, Browser.' }),
-  ).toBeVisible();
+  ).toBeVisible({ timeout: 15_000 });
+  await expectReadableContrast(page);
 }
 
 test('Admin manages a project and task, filters results, and cannot delete a nonempty project', async ({
@@ -91,6 +93,15 @@ test('Admin manages a project and task, filters results, and cannot delete a non
     .getByRole('button', { name: 'Create project', exact: true })
     .click();
   let dialog = page.getByRole('dialog');
+  await expect(dialog.getByLabel('Project name')).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(dialog).not.toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Create project', exact: true }),
+  ).toBeFocused();
+  await page
+    .getByRole('button', { name: 'Create project', exact: true })
+    .click();
   await dialog.getByLabel('Project name').fill('Workflow delivery');
   await dialog
     .getByLabel('Description')
@@ -148,6 +159,7 @@ test('Admin manages a project and task, filters results, and cannot delete a non
   await expect(
     page.getByRole('row').filter({ hasText: 'Verify release checklist' }),
   ).toBeVisible();
+  await expectReadableContrast(page);
   await page.screenshot({ path: info.outputPath('tasks.png'), fullPage: true });
   await page
     .getByRole('navigation')
@@ -233,6 +245,7 @@ test('Member changes only assigned status and reads their overdue notification',
     })
     .click();
   await expect(page.getByText('0 unread', { exact: true })).toBeVisible();
+  await expectReadableContrast(page);
   await page.screenshot({
     path: info.outputPath('notifications.png'),
     fullPage: true,
@@ -272,6 +285,10 @@ test('Public registration validates input and creates a member account', async (
   workspace,
 }, info) => {
   await page.goto('/register');
+  await expect(
+    page.getByRole('heading', { name: 'Create your account' }),
+  ).toBeVisible();
+  await expectReadableContrast(page);
   await page.keyboard.press('Tab');
   await expect(
     page.getByRole('link', { name: 'Skip to content' }),

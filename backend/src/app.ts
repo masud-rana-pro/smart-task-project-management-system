@@ -50,6 +50,15 @@ export function createApp(
 
   if (dependencies) {
     const { db, pool, security } = dependencies;
+    app.get('/api/ready', async (_req, res) => {
+      res.set('Cache-Control', 'no-store');
+      try {
+        await db.$queryRaw`SELECT 1`;
+        res.json({ status: 'ready' });
+      } catch {
+        res.status(503).json({ status: 'unavailable' });
+      }
+    });
     if (security.trustProxyHops)
       app.set('trust proxy', security.trustProxyHops);
     const sessions = createSessionMiddleware(pool, security);

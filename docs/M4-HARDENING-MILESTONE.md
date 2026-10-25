@@ -1,6 +1,6 @@
 # M4 hardening and containers proposal
 
-Status: awaiting approval. No container download, service start or deployment is authorized by this document.
+Status: approved by the candidate after M3 CI passes; that condition was met on commit 564fe33 (run 40151067852). Starting the installed Docker Desktop, the three base-image downloads, lockfile dependency installation inside builds, isolated container startup, container-only OpenSSL/CA packages and the web-only bridge-network correction were separately approved. Administrator/WSL changes, Windows restarts and hosting remain outside approval.
 
 ## Proposed scope
 

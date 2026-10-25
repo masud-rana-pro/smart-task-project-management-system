@@ -105,7 +105,7 @@ textarea {
   width: 100%;
 }
 input::placeholder {
-  color: #76798c;
+  color: #6a6e82;
 }
 input[aria-invalid='true'],
 select[aria-invalid='true'],
@@ -163,7 +163,7 @@ h3 {
   font-size: 0.85rem;
 }
 .eyebrow {
-  color: #77728e;
+  color: #69617f;
   font-size: 0.66rem;
   letter-spacing: 0.14em;
   font-weight: 650;

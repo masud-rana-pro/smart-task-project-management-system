@@ -2,11 +2,39 @@ import { pino } from 'pino';
 import request from 'supertest';
 import { describe, expect, it } from 'vitest';
 import { createApp } from './app.js';
-import { parseEnvironment } from './config.js';
+import { parseEnvironment, parseApplicationEnvironment } from './config.js';
+import { Pool } from 'pg';
+import type { Database } from './db.js';
 
 const app = createApp(pino({ level: 'silent' }));
 
 describe('API foundation', () => {
+  it('reports unavailable readiness without leaking database errors while liveness remains up', async () => {
+    const pool = new Pool();
+    const failingDb = {
+      $queryRaw: async () => {
+        throw new Error('private database failure detail');
+      },
+    } as unknown as Database;
+    const brokenApp = createApp(pino({ level: 'silent' }), {
+      db: failingDb,
+      pool,
+      security: {
+        origin: 'http://127.0.0.1:5173',
+        sessionSecret: 'a'.repeat(64),
+        secure: false,
+        trustProxyHops: 0,
+      },
+    });
+    try {
+      const response = await request(brokenApp).get('/api/ready').expect(503);
+      expect(response.body).toEqual({ status: 'unavailable' });
+      await request(brokenApp).get('/api/health').expect(200);
+    } finally {
+      brokenApp.locals.sessionStore.close();
+      await pool.end();
+    }
+  });
   it('reports liveness without exposing configuration or claiming database health', async () => {
     const response = await request(app).get('/api/health').expect(200);
     expect(response.body).toEqual({ status: 'ok' });
@@ -44,6 +72,26 @@ describe('API foundation', () => {
 });
 
 describe('environment validation', () => {
+  it('requires an exact HTTPS production origin and a bounded proxy setting', () => {
+    const values = {
+      NODE_ENV: 'production',
+      DATABASE_URL: 'postgresql://example:fictional@127.0.0.1:5432/example',
+      SESSION_SECRET: 'a'.repeat(64),
+      APP_ORIGIN: 'https://app.example.invalid',
+    };
+    expect(parseApplicationEnvironment(values).APP_ORIGIN).toBe(
+      values.APP_ORIGIN,
+    );
+    expect(() =>
+      parseApplicationEnvironment({
+        ...values,
+        APP_ORIGIN: 'http://app.example.invalid',
+      }),
+    ).toThrow('HTTPS');
+    expect(() =>
+      parseApplicationEnvironment({ ...values, TRUST_PROXY_HOPS: '2' }),
+    ).toThrow('TRUST_PROXY_HOPS');
+  });
   it('rejects invalid ports and does not reveal supplied values', () => {
     expect(() => parseEnvironment({ PORT: 'not-a-port-secret' })).toThrow(
       'Invalid environment fields: PORT',

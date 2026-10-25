@@ -66,7 +66,7 @@
 .workspace-label small {
   display: block;
   font-size: 0.6rem;
-  color: #77798a;
+  color: #64687c;
   font-weight: 400;
   margin-top: 2px;
 }
@@ -74,7 +74,7 @@
   width: 30px;
   height: 30px;
   background: #f0edf9;
-  color: #7562bd;
+  color: #6550ac;
   border-radius: 6px;
   display: grid;
   place-items: center;
@@ -82,7 +82,7 @@
 .nav-caption {
   font-size: 0.59rem;
   letter-spacing: 0.14em;
-  color: #787b8c;
+  color: #64687c;
   margin: 30px 12px 11px;
   font-weight: 650;
 }
@@ -137,7 +137,7 @@
 }
 .team-note p {
   font-size: 0.72rem;
-  color: #77718e;
+  color: #665b7c;
   margin: 0;
 }
 .profile {
@@ -161,7 +161,7 @@
 .profile small {
   display: block;
   font-size: 0.68rem;
-  color: #77798d;
+  color: #64687c;
   margin-top: 2px;
 }
 .avatar {
@@ -214,7 +214,7 @@
   font-weight: 550;
 }
 .breadcrumb {
-  color: #818396;
+  color: #64687c;
 }
 .breadcrumb span {
   margin: 0 12px;
@@ -226,7 +226,7 @@
   gap: 19px;
 }
 .timezone {
-  color: #7b7d90;
+  color: #64687c;
   font-size: 0.7rem;
 }
 .notification-link {
@@ -287,7 +287,7 @@
 .banner-kicker {
   font-size: 0.57rem;
   letter-spacing: 0.14em;
-  color: #7b6b9f;
+  color: #6d5b90;
   font-weight: 650;
 }
 .welcome-banner h2 {
@@ -299,7 +299,7 @@
 }
 .welcome-banner p {
   font-size: 0.78rem;
-  color: #72638f;
+  color: #635180;
   margin: 0;
 }
 .banner-art {
@@ -388,7 +388,7 @@
 }
 .stat-label {
   font-size: 0.73rem;
-  color: #777a8b;
+  color: #64687c;
 }
 .stat-card > strong {
   font-size: 1.9rem;
@@ -398,7 +398,7 @@
   margin: 3px 0 9px;
 }
 .stat-card small {
-  color: #7d7f90;
+  color: #64687c;
   font-size: 0.6rem;
 }
 .dashboard-grid {
@@ -459,7 +459,7 @@
   font-weight: 550;
 }
 .progress-list li span {
-  color: #777a8e;
+  color: #64687c;
   font-size: 0.67rem;
 }
 .progress-row {
@@ -508,7 +508,7 @@
   color: #45475d;
 }
 .activity-list p {
-  color: #828397;
+  color: #64687c;
   font-size: 0.68rem;
   margin: 4px 0;
 }
@@ -554,7 +554,7 @@
 .badge.in_progress,
 .status-select.in_progress {
   background: #efebfa;
-  color: #7960b9;
+  color: #6b4fa8;
 }
 .badge.completed,
 .status-select.completed {
@@ -566,20 +566,20 @@
   padding: 14px 23px;
   background: #fdfdff;
   font-size: 0.65rem;
-  color: #777b90;
+  color: #64687c;
 }
 .workspace-footer {
   padding: 18px 35px;
   display: flex;
   justify-content: space-between;
-  color: #838596;
+  color: #64687c;
   font-size: 0.65rem;
   border-top: 1px solid #e9eaf2;
 }
 .empty {
   padding: 50px 25px;
   text-align: center;
-  color: #7d7d92;
+  color: #64687c;
 }
 .empty-symbol {
   display: inline-grid;
@@ -650,7 +650,7 @@
 }
 .project-description {
   font-size: 0.8rem;
-  color: #73758b;
+  color: #64687c;
   min-height: 58px;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
@@ -663,7 +663,7 @@
   justify-content: space-between;
   font-size: 0.68rem;
   margin-bottom: 8px;
-  color: #77788d;
+  color: #64687c;
 }
 .project-progress strong {
   color: #75648f;
@@ -705,7 +705,7 @@
 .search-field > svg {
   position: absolute;
   left: 12px;
-  color: #85869a;
+  color: #64687c;
   width: 17px;
 }
 .search-field input {
@@ -714,7 +714,7 @@
   background: #fbfbfe;
 }
 .result-count {
-  color: #777b90;
+  color: #64687c;
   font-size: 0.73rem;
   white-space: nowrap;
 }
@@ -753,7 +753,7 @@
 .task-table th {
   padding: 13px 14px;
   font-weight: 550;
-  color: #777b90;
+  color: #64687c;
   background: #fafafe;
   white-space: nowrap;
   font-size: 0.66rem;
@@ -793,7 +793,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #85869a;
+  color: #64687c;
   margin-top: 4px;
   font-size: 0.67rem;
 }
@@ -816,13 +816,13 @@
   margin-right: 3px;
 }
 .priority.high {
-  color: #bd5e70;
+  color: #a4445b;
 }
 .priority.medium {
-  color: #a68337;
+  color: #866222;
 }
 .priority.low {
-  color: #558d81;
+  color: #3f7567;
 }
 .status-select {
   padding: 5px 7px;
@@ -839,7 +839,7 @@
   gap: 10px;
   border-top: 1px solid #eeeef5;
   font-size: 0.73rem;
-  color: #777b90;
+  color: #64687c;
 }
 .pagination > div {
   display: flex;
@@ -927,12 +927,12 @@ dialog::backdrop {
 }
 .notification-list p {
   font-size: 0.75rem;
-  color: #956576;
+  color: #845567;
   margin: 6px 0 2px;
 }
 .notification-list small {
   font-size: 0.65rem;
-  color: #7e778f;
+  color: #665d78;
 }
 .notification-list button {
   font-size: 0.7rem;
@@ -970,13 +970,13 @@ dialog::backdrop {
 }
 .auth-story > div > p:not(.eyebrow) {
   font-size: 0.9rem;
-  color: #7b6e8e;
+  color: #665679;
   max-width: 380px;
   line-height: 1.8;
 }
 .story-footer {
   font-size: 0.7rem;
-  color: #857591;
+  color: #675374;
   margin: 0;
 }
 .story-preview {
@@ -1067,7 +1067,7 @@ dialog::backdrop {
   margin: 45px 0 0;
   text-align: center;
   font-size: 0.65rem;
-  color: #8a8699;
+  color: #686178;
 }
 .success {
   background: #edf6f1;

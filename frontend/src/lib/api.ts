@@ -15,10 +15,38 @@ export class ApiError extends Error {
     this.fields = fields;
   }
 }
+type ResponseData = {
+  csrfToken?: string;
+  error?: {
+    code?: string;
+    message?: string;
+    fields?: { field: string; message: string }[];
+  };
+};
+async function readJson(response: Response): Promise<ResponseData> {
+  try {
+    const value: unknown = await response.json();
+    if (!value || typeof value !== 'object' || Array.isArray(value))
+      throw new Error('Unexpected response shape');
+    return value as ResponseData;
+  } catch {
+    throw new ApiError(
+      response.status,
+      'INVALID_RESPONSE',
+      'The service is temporarily unavailable. Please retry.',
+    );
+  }
+}
 async function refreshToken() {
   const response = await fetch('/api/auth/csrf', {
     credentials: 'same-origin',
     signal: AbortSignal.timeout(10000),
+  }).catch(() => {
+    throw new ApiError(
+      0,
+      'NETWORK_ERROR',
+      'Could not connect. Check your connection and try again.',
+    );
   });
   if (!response.ok)
     throw new ApiError(
@@ -26,7 +54,13 @@ async function refreshToken() {
       'TOKEN_ERROR',
       'Unable to start a secure request. Please retry shortly.',
     );
-  const data = (await response.json()) as { csrfToken: string };
+  const data = await readJson(response);
+  if (!data.csrfToken || !/^[a-f0-9]{64}$/.test(data.csrfToken))
+    throw new ApiError(
+      response.status,
+      'TOKEN_ERROR',
+      'Unable to start a secure request. Please retry shortly.',
+    );
   csrfToken = data.csrfToken;
 }
 export async function api<T>(
@@ -60,7 +94,7 @@ export async function api<T>(
     if (path === '/auth/logout') csrfToken = undefined;
     return undefined as T;
   }
-  const data = await response.json();
+  const data = await readJson(response);
   if (!response.ok) {
     if (data.error?.code === 'CSRF_REJECTED' && !retried) {
       await refreshToken();

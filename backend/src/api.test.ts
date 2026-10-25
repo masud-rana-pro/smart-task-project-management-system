@@ -36,6 +36,36 @@ describe.skipIf(!connection)('authenticated PostgreSQL API', () => {
   const admin = request.agent(app);
   const member = request.agent(app);
   const other = request.agent(app);
+  it('reports database readiness independently of public liveness', async () => {
+    const response = await request(app).get('/api/ready').expect(200);
+    expect(response.body).toEqual({ status: 'ready' });
+    expect(response.headers['cache-control']).toBe('no-store');
+  });
+  it('sets Secure session cookies behind an explicitly trusted HTTPS proxy', async () => {
+    const secureApp = createApp(pino({ level: 'silent' }), {
+      ...database,
+      security: {
+        origin: 'https://app.example.invalid',
+        sessionSecret: randomBytes(32).toString('hex'),
+        secure: true,
+        trustProxyHops: 1,
+      },
+    });
+    try {
+      const response = await request(secureApp)
+        .get('/api/auth/csrf')
+        .set('X-Forwarded-Proto', 'https')
+        .expect(200);
+      expect(JSON.stringify(response.headers['set-cookie'])).toContain(
+        '; Secure',
+      );
+      expect(JSON.stringify(response.headers['set-cookie'])).toContain(
+        'HttpOnly',
+      );
+    } finally {
+      secureApp.locals.sessionStore.close();
+    }
+  });
   let adminToken: string;
   let memberToken: string;
   let otherToken: string;

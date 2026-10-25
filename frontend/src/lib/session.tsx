@@ -31,6 +31,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   });
   useEffect(() => {
     const expire = () => {
+      if (!client.getQueryData(['session'])) return;
       client.removeQueries({
         predicate: (query) => query.queryKey[0] !== 'session',
       });

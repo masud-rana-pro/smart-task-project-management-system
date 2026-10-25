@@ -50,7 +50,7 @@ export default function ProjectsPage() {
       )}
       {projects.isPending ? (
         <Loading />
-      ) : !projects.data?.projects.length ? (
+      ) : !projects.data ? null : !projects.data.projects.length ? (
         <section className="panel">
           <Empty title="Room for your next big idea">
             {admin

@@ -1,6 +1,6 @@
 # M3 frontend verification
 
-Local verification on 25 October 2026. M3 was approved after successful M2 CI on 5d1d68e. The implemented frontend includes protected navigation, registration/login/logout, project/task forms, member status controls, combined filters/search/sort/pagination, dashboard progress charts and active in-app notifications.
+Local verification on 25 October 2026. M3 was approved after successful M2 CI on 5d1d68e. M3 CI passed on commit 564fe33: https://github.com/masud-rana-pro/smart-task-project-management-system/actions/runs/40151067852. The implemented frontend includes protected navigation, registration/login/logout, project/task forms, member status controls, combined filters/search/sort/pagination, dashboard progress charts and active in-app notifications.
 
 ## Evidence
 
