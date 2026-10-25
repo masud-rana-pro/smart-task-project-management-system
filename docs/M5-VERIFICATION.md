@@ -1,6 +1,6 @@
 # M5 preparation verification
 
-Status: local code/configuration preparation passed on 26 October 2026; GitHub CI pending. No accounts, hosted database or public deployment exist yet.
+Status: preparation CI and hosted database setup passed on 26 October 2026. The candidate created Vercel Hobby and Neon Free accounts and the dedicated Neon project. Public application deployment and evaluator Admin bootstrap remain pending separate approval.
 
 M4 passed GitHub CI on 2754bc8, run 40219897500, satisfying the candidate's condition for starting M5.
 
@@ -27,8 +27,18 @@ The function helper initially brought a pinned vulnerable Zod dependency through
 
 ## Remaining verification
 
-Final diff/secret review and GitHub CI. Platform route handling, TLS database connectivity and deployed browser behavior require an approved preview/publication target; local checks cannot prove them.
+Diff/secret review passed before commit d84def2; [GitHub CI run 40221183618](https://github.com/masud-rana-pro/smart-task-project-management-system/actions/runs/40221183618) succeeded. Platform route handling, TLS database connectivity and deployed browser behavior require an approved preview/publication target; local checks cannot prove them.
 
 ## Account and publication gates
 
-The candidate has neither Vercel nor Neon accounts. Admin credentials must remain private for direct evaluator sharing. Account creation/connections, the exact hosted database and its migration/bootstrap, and the exact publication target each need separate approval. Stop any path requesting a card or paid plan.
+The candidate created Vercel Hobby and Neon Free accounts privately and reported both ready on 26 October. They created Neon project bright-mind-smart-task in AWS Singapore, PostgreSQL 17, production default branch, bright_mind_db owned by bright_mind_db_owner. Their subsequent "proceed" approved this target's application-role and migration setup. Admin credentials must remain private for direct evaluator sharing. GitHub/provider connections, hosted application Admin bootstrap and publication still require separate approval. Stop any path requesting a card or paid plan.
+
+## Hosted database evidence
+
+- Owner direct TLS connection verified, with exact database/role and an empty initial public schema.
+- smart_task_app created through SQL with random password stored only in ignored .local/neon-app.env; no administrative role was granted.
+- node scripts/neon-database.mjs migrate: committed migration deployed successfully, exit 0; no reset/seed.
+- Grant transaction passed for SELECT/INSERT/UPDATE/DELETE on the six application tables. Public-schema CREATE was revoked from PUBLIC in this dedicated database.
+- Pooled TLS login as smart_task_app passed. Verified no administrative flags, public-schema CREATE or migration-table SELECT, and all four DML privileges on every required table. No application data written by verification.
+- Initial endpoint guard rejected the additional c-2 hostname segment; corrected before any database mutation. Corrected pooled-host generation to place -pooler on the first DNS label.
+- Proposed Vercel function region is now explicitly sin1 (Singapore), matching the database; this configuration has not yet been deployed.
