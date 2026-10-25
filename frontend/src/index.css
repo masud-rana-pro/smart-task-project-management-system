@@ -1,9 +1,14 @@
 :root {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  color: #173344;
-  background: #f5f7f9;
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  color: #292b3e;
+  background: #f7f8fc;
   font-synthesis: none;
-  line-height: 1.6;
+  line-height: 1.5;
+  font-weight: 400;
 }
 * {
   box-sizing: border-box;
@@ -11,11 +16,224 @@
 body {
   margin: 0;
 }
+a {
+  color: #6551bf;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
 button,
 a {
   -webkit-tap-highlight-color: transparent;
 }
+button,
+.button {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #6b56c5;
+  color: #fff;
+  padding: 10px 17px;
+  min-height: 42px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+}
+button:hover,
+.button:hover {
+  background: #5944b0;
+  text-decoration: none;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.secondary {
+  background: white;
+  color: #4b4d64;
+  border-color: #dddfea;
+}
+.secondary:hover {
+  background: #f1eff9;
+}
+.danger {
+  background: #b63e4c;
+}
+.danger:hover {
+  background: #9b303d;
+}
+.text-button {
+  padding: 4px 5px;
+  background: transparent;
+  color: #6651bb;
+  min-height: 36px;
+  font-size: 0.8rem;
+}
+.text-button:hover {
+  background: #efedf8;
+}
+.danger-text {
+  color: #af3546;
+}
+.full-width {
+  width: 100%;
+}
 :focus-visible {
-  outline: 3px solid #b65c12;
-  outline-offset: 4px;
+  outline: 3px solid #9b7c19;
+  outline-offset: 3px;
+}
+input,
+select,
+textarea {
+  border: 1px solid #d9dce7;
+  border-radius: 7px;
+  padding: 10px 12px;
+  min-height: 42px;
+  background: white;
+  color: #303248;
+  width: 100%;
+}
+input::placeholder {
+  color: #76798c;
+}
+input[aria-invalid='true'],
+select[aria-invalid='true'],
+textarea[aria-invalid='true'] {
+  border-color: #b23448;
+}
+textarea {
+  resize: vertical;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+form {
+  display: grid;
+  gap: 18px;
+}
+.field-error {
+  color: #a92d41;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+.field-hint {
+  color: #6b6e82;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1 {
+  font-size: clamp(1.7rem, 3vw, 2.1rem);
+  letter-spacing: -0.045em;
+  line-height: 1.2;
+  font-weight: 650;
+  margin-bottom: 10px;
+}
+h2 {
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  margin-bottom: 5px;
+}
+h3 {
+  font-size: 1rem;
+}
+.muted {
+  color: #6d7084;
+  font-size: 0.85rem;
+}
+.eyebrow {
+  color: #77728e;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  font-weight: 650;
+  text-transform: uppercase;
+  margin-bottom: 9px;
+}
+.alert {
+  background: #fff0f1;
+  color: #a12f43;
+  border: 1px solid #f0c5ce;
+  border-radius: 7px;
+  padding: 12px;
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+.info {
+  background: #eeeffb;
+  color: #4d4483;
+  border-radius: 7px;
+  padding: 12px;
+  font-size: 0.85rem;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 15px;
+  padding: 10px 16px;
+  background: #fff;
+  color: #463183;
+  z-index: 100;
+  border-radius: 6px;
+}
+.skip-link:focus {
+  top: 10px;
+}
+.loading {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #6d7084;
+  font-size: 0.9rem;
+}
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ddd8f2;
+  border-top-color: #6b56c5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
 }

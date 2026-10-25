@@ -1,6 +1,6 @@
 # M3 frontend milestone proposal
 
-Status: awaiting candidate approval. Planning only; no feature-screen implementation authorized yet.
+Status: approved by the candidate after M2 CI passes. M2 CI succeeded on commit 5d1d68e (run 40149096934). M3 is implemented and locally verified; see M3-VERIFICATION.md. Implementation CI is the remaining delivery check.
 
 ## Scope and output
 

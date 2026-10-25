@@ -69,6 +69,20 @@ describe.skipIf(!connection)('authenticated PostgreSQL API', () => {
       .expect(401);
     return response;
   }
+  it('allows members to list only minimal assignee identities for filtering', async () => {
+    const response = await member.get('/api/users/assignees').expect(200);
+    expect(response.body.users).toContainEqual({
+      id: memberId,
+      name: 'API Member',
+    });
+    expect(
+      response.body.users.every(
+        (user: Record<string, unknown>) =>
+          Object.keys(user).sort().join(',') === 'id,name',
+      ),
+    ).toBe(true);
+    await request(app).get('/api/users/assignees').expect(401);
+  });
   beforeAll(async () => {
     const passwordHash = await hashPassword(password);
     adminId = (

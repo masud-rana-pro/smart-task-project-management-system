@@ -2,7 +2,7 @@
 
 A React/TypeScript and Node/Express task-management assessment prototype with PostgreSQL persistence.
 
-**Current milestone: M2 backend.** The API implements registration/login/logout, PostgreSQL sessions, Admin/Team Member permissions, project/task CRUD, filtering/search/pagination, dashboard/progress calculations and in-app overdue notifications. The React application is still the M1 starter; feature screens, charts, containerization and live hosting are upcoming milestones. This is not yet the completed assignment.
+**Current milestone: M3 frontend.** The React interface and API implement registration/login/logout, PostgreSQL sessions, Admin/Team Member permissions, project/task CRUD, filtering/search/pagination, dashboard/progress charts and in-app overdue notifications. Desktop and mobile browser workflows are verified locally. Container verification, live hosting and final submission documents remain upcoming milestones. This is not yet the completed assignment.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ npm ci
 npm run db:generate
 ```
 
-Configure the environment and database below, then run `npm run dev`. Open http://127.0.0.1:5173 and select **Check API connection**. The frontend proxies `/api` to Express on http://127.0.0.1:3001. The liveness endpoint does not query the database; application features require a migrated PostgreSQL database. Both dev servers bind to localhost by default. Use `127.0.0.1` consistently so the configured origin and cookies match.
+Configure the environment and database below, then run `npm run dev`. Open http://127.0.0.1:5173 and sign in using a locally provisioned application account, or register a Team Member. The frontend proxies `/api` to Express on http://127.0.0.1:3001. The liveness endpoint does not query the database; application features require a migrated PostgreSQL database. Both dev servers bind to localhost by default. Use `127.0.0.1` consistently so the configured origin and cookies match.
 
 Individual processes: `npm run dev -w frontend` and `npm run dev -w backend`. To run the compiled API: `npm run build -w backend`, then `npm start -w backend`. `npm run preview -w frontend` previews a static build; it is not the configured full-stack development proxy or production hosting setup.
 
@@ -63,7 +63,7 @@ npm run db:generate
 
 `check` runs formatting, lint, type checks, unit/API tests, and frontend/backend builds. Database integration tests skip explicitly when `TEST_DATABASE_URL` is absent. Set it to a migrated isolated `_test` database to run them. Skipped tests are not passing database evidence.
 
-Browser tests are prepared but need the Playwright Chromium binary. Install it with `npx playwright install chromium` when that download is approved, then run `npm run test:e2e`. This starts temporary local frontend/API processes for the test. CI provisions isolated PostgreSQL, applies migrations, and runs the checks and browser test. A workflow file is not proof of a successful GitHub run.
+Browser workflows need a Playwright Chromium binary or installed Chrome. Install Chromium with `npx playwright install chromium` when that download is approved, then run `npm run test:e2e`. Stop any API using port 3001 first: the suite intentionally starts its own compiled API against TEST_DATABASE_URL and creates/removes only its fictional fixtures. It never reuses a development API. Eight desktop/mobile workflows cover roles, CRUD, filters, pagination, notifications, registration, logout and keyboard skip navigation. CI provisions isolated PostgreSQL, applies migrations, and runs the checks and browser workflows. A workflow file is not proof of a successful GitHub run.
 
 If the browser download is unavailable, Playwright can use an already-installed Chrome without changing the normal browser profile. In PowerShell: `$env:PLAYWRIGHT_CHANNEL='chrome'`, then `npm run test:e2e`; afterward `Remove-Item Env:PLAYWRIGHT_CHANNEL`. The suite checks desktop/mobile layouts and saves screenshots under ignored `test-results/`. CI uses Playwright's downloaded Chromium by default.
 
@@ -76,8 +76,8 @@ Open http://127.0.0.1:3001/api/openapi.json for the OpenAPI 3.1 specification, o
 ## Project layout
 
 ```text
-frontend/                 Official Vite React/TypeScript starter, adapted for this project
-backend/src/              Express app, listener, environment validation and tests
+frontend/src/             React pages, forms, session/API integration and components
+backend/src/              Express API, security, database access, CLI and tests
 backend/prisma/           Schema and versioned migrations
 tests/e2e/                Browser integration test
 .github/workflows/        CI definition

@@ -25,7 +25,7 @@ Registration uses the same CSRF bootstrap, accepts name/email/password (12-128 c
 | Task list/detail             | GET /api/tasks, /api/tasks/:id                         | Both roles                                                         |
 | Task create/update/delete    | POST /api/tasks; PATCH/PUT/DELETE /api/tasks/:id       | Admin                                                              |
 | Change status                | PATCH /api/tasks/:id/status                            | Admin or assigned member; status is the only accepted field        |
-| Assignee list                | GET /api/users/assignees                               | Admin; id/name only                                                |
+| Assignee list                | GET /api/users/assignees                               | Authenticated roles; id/name only for task assignment/filtering    |
 | Dashboard                    | GET /api/dashboard                                     | Both roles; shared workspace                                       |
 | Overdue notifications        | GET /api/notifications                                 | Own relevant notices only                                          |
 | Mark read                    | PATCH /api/notifications/:id/read                      | Owner only; another user's ID receives 404                         |

@@ -1,6 +1,6 @@
 # M2 backend verification
 
-Verified locally on 25 October 2026. M2 uses the existing M1 database migration; no schema reset or unrelated database changes were required. GitHub CI results must be checked after the implementation push.
+Verified locally on 25 October 2026. M2 uses the existing M1 database migration; no schema reset or unrelated database changes were required. GitHub CI passed for commit 5d1d68e: https://github.com/masud-rana-pro/smart-task-project-management-system/actions/runs/40149096934. CI verified clean installation, migration, all code checks and both Chromium browser profiles.
 
 ## Results
 

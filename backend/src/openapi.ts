@@ -153,7 +153,7 @@ operation(
 operation(
   '/api/users/assignees',
   'get',
-  'Admin: list minimal assignee identities',
+  'List minimal assignee identities for shared-workspace filtering',
   object({
     users: { type: 'array', items: object({ id, name: text }, ['id', 'name']) },
   }),

@@ -40,7 +40,7 @@ async function validateReferences(
 
 export function workRoutes(db: Database) {
   const router = Router();
-  router.get('/users/assignees', requireAdmin, async (_req, res) => {
+  router.get('/users/assignees', async (_req, res) => {
     res.json({
       users: await db.user.findMany({
         select: { id: true, name: true },

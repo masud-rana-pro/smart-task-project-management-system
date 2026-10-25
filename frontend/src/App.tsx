@@ -1,74 +1,57 @@
-import { useState } from 'react';
-import { z } from 'zod';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { lazy, Suspense } from 'react';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { SessionProvider } from './lib/session';
+import Workspace from './components/Workspace';
+import AuthPage from './pages/AuthPage';
+import ProjectsPage from './pages/ProjectsPage';
+import TasksPage from './pages/TasksPage';
+import NotificationsPage from './pages/NotificationsPage';
+import { Loading } from './components/ui';
 import './App.css';
-
-const healthSchema = z.object({ status: z.literal('ok') });
-
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const client = new QueryClient({
+  defaultOptions: {
+    queries: { retry: false, staleTime: 20_000, refetchOnWindowFocus: true },
+  },
+});
 export default function App() {
-  const [status, setStatus] = useState<'idle' | 'checking' | 'ready' | 'error'>(
-    'idle',
-  );
-  async function checkConnection() {
-    setStatus('checking');
-    try {
-      const response = await fetch('/api/health', {
-        signal: AbortSignal.timeout(8000),
-      });
-      if (!response.ok) throw new Error('API request failed');
-      healthSchema.parse(await response.json());
-      setStatus('ready');
-    } catch {
-      setStatus('error');
-    }
-  }
   return (
-    <>
-      <a className="skip-link" href="#main">
-        Skip to content
-      </a>
-      <header className="site-header">
-        <span className="brand-mark" aria-hidden="true">
-          ST
-        </span>
-        <span>Smart Task</span>
-      </header>
-      <main id="main" className="workspace">
-        <p className="eyebrow">Project management workspace</p>
-        <h1>Smart Task starts with a clear foundation.</h1>
-        <p className="intro">
-          The application starter is ready for development. Authentication,
-          projects, tasks and dashboards will be added in the next approved
-          milestones.
-        </p>
-        <section
-          className="connection-panel"
-          aria-labelledby="connection-title"
-        >
-          <div>
-            <p className="eyebrow">Development check</p>
-            <h2 id="connection-title">API connection</h2>
-            <p>
-              Check that the Express API can be reached through the application.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => void checkConnection()}
-            disabled={status === 'checking'}
-          >
-            {status === 'checking' ? 'Checking…' : 'Check API connection'}
-          </button>
-          <p role="status">
-            {status === 'idle' && 'Not checked yet.'}
-            {status === 'checking' && 'Connecting to the API…'}
-            {status === 'ready' &&
-              'API is reachable. Database connectivity is checked separately.'}
-            {status === 'error' &&
-              'Could not reach the API. Check that the backend is running, then retry.'}
-          </p>
-        </section>
-      </main>
-      <footer>Assessment prototype · Foundation milestone</footer>
-    </>
+    <QueryClientProvider client={client}>
+      <BrowserRouter>
+        <SessionProvider>
+          <a className="skip-link" href="#main">
+            Skip to content
+          </a>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/login" element={<AuthPage key="login" />} />
+              <Route
+                path="/register"
+                element={<AuthPage key="register" register />}
+              />
+              <Route element={<Workspace />}>
+                <Route index element={<DashboardPage />} />
+                <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/tasks" element={<TasksPage />} />
+                <Route path="/notifications" element={<NotificationsPage />} />
+                <Route
+                  path="*"
+                  element={
+                    <div>
+                      <h1>Page not found</h1>
+                      <p>This page may have moved.</p>
+                      <Link className="button" to="/">
+                        Back to overview
+                      </Link>
+                    </div>
+                  }
+                />
+              </Route>
+            </Routes>
+          </Suspense>
+        </SessionProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
