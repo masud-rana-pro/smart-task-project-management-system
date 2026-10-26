@@ -1,11 +1,11 @@
-# Architecture proposal
+# Architecture
 
-Status: architecture, listed libraries and M1 implementation/installations approved. M2 feature implementation is not yet approved. Prepared 24 October 2026.
+Status: implementation through M5 is approved and deployed; a 26 October SoC audit extracted HTTP-independent application services. Final regression/deployment evidence is recorded in M5-VERIFICATION.md and the acceptance audit. This document describes the current design rather than the original planning alternatives.
 Approved constraints and features are recorded in PROJECT-PLAN.md and REQUIREMENTS.md. Installed versions are recorded in package-lock.json.
 
 ## Application boundaries
 
-One repository: smart-task-project-management-system, public when separately approved. npm workspaces containing frontend/ and backend/. Keep HTTP handlers thin, business rules in services, database access explicit, and validation at request boundaries. Avoid generic base repositories, dependency injection frameworks and microservices for this prototype.
+One public repository: smart-task-project-management-system, with npm workspaces frontend/ and backend/. HTTP handlers validate requests and select status codes; services/auth-service.ts, services/work-service.ts and services/notification-service.ts own application operations. Prisma provides typed persistence through db.ts, so an extra generic repository wrapper would duplicate its API. Security middleware owns sessions, CSRF, identity and role guards. Configuration, app creation and listener/provider startup are separate concerns.
 
 ```mermaid
 flowchart LR
@@ -15,7 +15,7 @@ flowchart LR
   Services --> DB[(PostgreSQL)]
 ```
 
-During development Vite proxies /api to Express. For a proposed Vercel deployment, the frontend serves the browser app and proxies /api to a separate Express deployment; the browser uses one origin. Verify rewrites, cookie forwarding and CSRF behavior on an early deployment before relying on this arrangement. Locally/containerized, Express remains a conventional Node server. Export app creation separately from the local listener for integration tests and function hosting.
+During development Vite proxies /api to Express. One Vercel project serves compiled React assets and routes /api to the root function adapter; the browser uses one origin. deployment/routing.mjs removes the provider's reserved rewrite path metadata before strict API query validation. Locally/containerized, Express remains a conventional Node server. runtime.ts composes shared dependencies; server.ts owns the local listener/shutdown and api/index.mjs owns the provider pool lifecycle. React pages compose shared components/forms, while lib/api.ts owns HTTP/CSRF transport, lib/session.tsx owns identity/cache transitions and lib/types.ts owns browser DTOs/date presentation. React Query owns server state rather than copying it into unrelated component state.
 
 ## Proposed libraries and purpose
 
@@ -25,7 +25,7 @@ During development Vite proxies /api to Express. For a proposed Vercel deploymen
 | Navigation    | React Router                                   | Protected routes and page navigation                                     |
 | Remote state  | TanStack Query                                 | API cache, invalidation, loading/error handling                          |
 | Forms         | React Hook Form and Zod                        | Form state and runtime validation                                        |
-| UI            | CSS modules/design tokens and semantic HTML    | Consistent accessible layout without an extra UI framework               |
+| UI            | Global application CSS/design tokens and semantic HTML | Consistent accessible layout without an extra UI framework          |
 | Charts        | Recharts                                       | Accessible supporting project progress visual; include text values       |
 | API           | Express, TypeScript, Zod                       | REST routes, middleware and validated payloads                           |
 | Persistence   | Prisma ORM with PostgreSQL                     | Typed queries and reviewed versioned SQL migrations                      |
@@ -66,7 +66,7 @@ Project FK deletion is RESTRICT, providing the approved protection even under co
 | GET /api/tasks, /api/tasks/:id                            | Both roles                                                             |
 | POST /api/tasks; PATCH/DELETE /api/tasks/:id              | Admin                                                                  |
 | PATCH /api/tasks/:id/status                               | Admin or assigned member; member can supply status only                |
-| GET /api/users/assignees                                  | Admin; minimal id/name list for assignment                             |
+| GET /api/users/assignees                                  | Both roles; minimal id/name list for assignment/filtering              |
 | GET /api/dashboard                                        | Both roles; shared-workspace totals                                    |
 | GET /api/notifications; PATCH /api/notifications/:id/read | Own notifications only                                                 |
 | GET /api/health                                           | Minimal public liveness response; no secrets or infrastructure details |
@@ -83,9 +83,9 @@ Use parameterized ORM queries, request size limits, strict field allowlists, val
 
 ## Business calculations and notifications
 
-Get the current calendar date explicitly in Asia/Dhaka on the server. Task is overdue when due_date < today's Bangladesh date and status != COMPLETED. Due today is not overdue. Pending = TODO + IN_PROGRESS (proposal awaiting confirmation). Project progress = completed tasks / all tasks; empty project shows 0% with an explicit no-tasks state. Dashboard aggregates and filtered lists must agree with the shared-workspace visibility rules.
+Get the current calendar date explicitly in Asia/Dhaka on the server. Task is overdue when due_date < today's Bangladesh date and status != COMPLETED. Due today is not overdue. Pending = TODO + IN_PROGRESS. Project progress = completed tasks / all tasks; empty project shows 0% with an explicit no-tasks state. Dashboard aggregates and filtered lists agree with the approved shared-workspace visibility rules.
 
-Proposed recipients: assigned member for their overdue tasks, Admins for all overdue tasks. Synchronize lazily on authenticated app activity and periodically while the tab is active, never in an unawaited function background timer. Use database upsert/unique constraints for deduplication. Proposed behavior: list only currently overdue relevant notices, retain stored read state for the same task/deadline, create a new notice for a newly overdue changed deadline, and remove old assignee notifications on reassignment. Notify only the new assignee on their next synchronization. Approve these details before implementation.
+Recipients are the assigned member for their overdue tasks and Admins for all overdue tasks. Synchronize lazily on authenticated app activity and every minute while the tab is active, without an unawaited function background timer. PostgreSQL uniqueness deduplicates recipient/task/deadline notices. Only currently overdue relevant notices appear; read state persists for an unchanged task/deadline. Completed/rescheduled tasks leave the current list. Reassignment hides the old member's notice and removes stale rows on that member's next synchronization; the new assignee receives the appropriate notice on their synchronization. No offline push or external email service is claimed.
 
 ## Verification and release
 
