@@ -1,6 +1,6 @@
 # M6 final deliverables proposal
 
-Status: planning only. Request candidate approval after the live deployment workflows pass; code fixes and M5 verification continue under existing approval.
+Status: conditionally approved by the candidate: audit separation of concerns and every requirement, fix gaps, then prepare M6. The audit extracted backend services and reran local/deployed workflows. Final evidence is tracked in ACCEPTANCE-AUDIT.md and FINAL-VERIFICATION.md. No employer communication is authorized.
 
 ## Deliverables
 

@@ -1,6 +1,6 @@
 # Requirements and acceptance checklist
 
-Status: M1/M2 passed local checks and GitHub CI. M3 frontend workflows and charts are implemented and locally verified (see M3-VERIFICATION.md). The checklist below describes final acceptance: hardening, containers, deployment and final reports remain pending. API tests alone do not complete UI acceptance. Source: the supplied two-page assignment and invitation email. User-selected options are identified below.
+Status: required application features and all six optional categories are implemented and have local/container/deployed evidence. See ACCEPTANCE-AUDIT.md for the requirement-to-evidence map, M5-VERIFICATION.md for live results and FINAL-VERIFICATION.md for final deliverables. Candidate technical rehearsal is still a separate human checkpoint. Source: the supplied assignment and approved user choices; confidential originals are excluded from this repository.
 
 | ID        | Requirement                                           | Acceptance evidence                                                                                    |
 | --------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |

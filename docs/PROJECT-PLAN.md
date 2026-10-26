@@ -80,3 +80,7 @@ M1 and M2 passed local checks and GitHub CI. The candidate provisioned the isola
 ## 26 October 2026 checkpoint
 
 M3 CI succeeded. Approved M4 changes were locally verified with 35 passing unit/API tests, eight passing browser workflows and successful isolated container migration, seed and authenticated browser smoke checks, then pushed as 957046a. GitHub CI status is tracked in M4-VERIFICATION.md. M5 deployment preparation is proposed in M5-DEPLOYMENT-MILESTONE.md and awaits approval; account actions, additional installations and live publishing remain separate gates. Candidate learning demonstration and final submission documents remain outstanding.
+
+## Final 26 October checkpoint (supersedes earlier gate status)
+
+M4's corrected CI passed, M5 preparation/provider actions and publication were subsequently approved, and the HTTPS application is deployed with verified hosted workflows. The candidate requested a SoC/requirement audit and approved M6 conditional on correcting gaps. The audit extracted backend services and passed local/deployed regressions; see ACCEPTANCE-AUDIT.md and M5-VERIFICATION.md, including the recorded documentation-formatting CI failure and correction. Final deliverables are indexed in SUBMISSION.md. Candidate technical rehearsal/employer submission remain separate human actions. Optional masud.root.sx is blocked by parent-domain TXT verification; the provider URL remains the working submission address.

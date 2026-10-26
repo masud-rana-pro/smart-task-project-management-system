@@ -70,3 +70,26 @@ The next screenshot confirms the current production alias https://smart-task-pro
 After the user requested direct assistance, Windows browser control failed without changing settings. The candidate installed the Vercel connection and approved its team access. The connector verified the project/domain, updated only the existing Production APP_ORIGIN and redeployed the same reviewed production source as dpl_ABeZZhbTDHihJ1HEVxZc7jZyU9ZG. That deployment became READY. Live API Admin login 200, session lookup 200 and logout 204 then passed.
 
 The live browser run passed desktop Admin login and mobile registration/member permission checks, then found task listing 400: strict validation rejected the Vercel rewrite's injected path query metadata. The root deployment adapter now removes only this reserved routing field from the request URL/preparsed query. Other unrecognized application query fields remain available for strict backend rejection. Two dedicated regression tests passed; compiled adapter readiness/security smoke passed. The failed live run's UUID-tagged test project/tasks/member and captured sessions were removed; evaluator Admin preserved. Full code checks and redeployment are in progress before retrying the complete live workflow.
+
+## Completed deployed workflows and final SoC audit
+
+The routing fix 3b1cf51 passed GitHub CI run 40258735740 and deployment dpl_BeXzBS3rigMWXXLFk2kg7ryhqEGz became READY. The full live browser/API/database workflow passed, with scoped fixture cleanup and evaluator Admin preserved.
+
+At the candidate's request, the final architecture audit extracted auth/work/notification services from HTTP handlers. Source commit f7d0cb3 was deployed as dpl_BuAFN1WVpuLpp57jcn3QiBSqEKSy, READY, on the unchanged working delta.vercel.app alias. Local npm run check passed 39 tests, formatting/lint/types and builds; all eight browser workflows passed. The architecture document was subsequently edited without formatting it, so CI run 40259900543 failed at npm run check; local reproduction identified docs/ARCHITECTURE.md formatting and it was corrected. That failed run is not described as passing.
+
+After the refactor deployment, node tmp/verify-live-workflows.mjs exited 0 with these actual results:
+
+- HTTPS Admin login and matching-origin CSRF; Secure, HttpOnly, SameSite=Lax cookie.
+- Mobile registration/login creates only TEAM_MEMBER; direct project creation forbidden.
+- Admin UI project/task creation; persisted API records; nonempty project deletion rejected.
+- Combined search/project/status/priority/assignee filters, sorting, pagination and nested-route refresh.
+- Assigned-task member status update; other-task status and full-edit attacks rejected. Correct overdue recipients, persistent read state and removal after completion; no mobile horizontal overflow.
+- Dashboard totals compared with hosted PostgreSQL, progress chart rendered, both roles logged out, protected route redirected and no browser JavaScript exceptions observed.
+
+The helper removed only its UUID-tagged fictional projects/tasks/member and captured test sessions. It preserved the private evaluator Admin. Local/API/browser suites additionally cover project/task edit and delete, malformed inputs, calendar rules and notification rescheduling/ownership; no claim that every API edge case was repeated against production.
+
+Runtime error-level inspection of the preceding deployed verification showed Node DEP0169 url.parse deprecation warnings rather than application exceptions. These upstream warnings are not suppressed and are a recorded maintenance limitation. Region sin1 is configured; no claim is made that logs prove every function's physical execution region.
+
+## Optional custom subdomain
+
+The candidate approved adding masud.root.sx and replacing only its existing FreeDNS A record. Vercel accepted the project-domain association but requires TXT ownership verification at _vercel.root.sx. The candidate confirmed control of only masud.root.sx, not the parent domain. No FreeDNS record was changed and APP_ORIGIN remains the working provider URL. Custom-domain TLS and routing are not verified; this optional address does not block the assignment's live-deployment requirement.

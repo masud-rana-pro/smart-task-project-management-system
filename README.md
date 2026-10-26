@@ -2,7 +2,9 @@
 
 A React/TypeScript and Node/Express task-management assessment prototype with PostgreSQL persistence.
 
-**Current milestone: M4 hardening and containers.** The React interface and API implement registration/login/logout, PostgreSQL sessions, Admin/Team Member permissions, project/task CRUD, filtering/search/pagination, dashboard/progress charts and in-app overdue notifications. The isolated container build, migrations, seed and authenticated browser smoke checks passed locally. See the milestone verification records for detailed results and remaining checks. Live hosting and final submission documents remain upcoming milestones. This is not yet the completed assignment.
+The React interface and API implement registration/login/logout, PostgreSQL sessions, Admin/Team Member permissions, project/task CRUD, filtering/search/pagination, dashboard/progress charts and in-app overdue notifications. All six optional feature categories are implemented. See the [acceptance audit](docs/ACCEPTANCE-AUDIT.md) and verification records for tested coverage and limitations.
+
+**Live demo:** https://smart-task-project-management-syste-delta.vercel.app. Public registration creates a Team Member; evaluator Admin credentials are shared privately. Hosted test fixtures are removed after verification, so the workspace may initially be empty. [Submission index and deliverables](docs/SUBMISSION.md).
 
 ## Prerequisites
 
@@ -77,13 +79,14 @@ Open http://127.0.0.1:3001/api/openapi.json for the OpenAPI 3.1 specification, o
 
 See [the container workflow](docs/CONTAINERS.md) for isolated PostgreSQL, automatic migrations, guarded fictional seeds and the compiled web/API at http://127.0.0.1:8080. Credentials stay in an ignored local file. The API/database ports remain private. This loopback HTTP demonstration is separate from live HTTPS deployment.
 
-Deployment configuration is being prepared for a single Vercel origin with Neon PostgreSQL. See [deployment instructions](docs/DEPLOYMENT.md) and [M5 verification](docs/M5-VERIFICATION.md). No public deployment exists yet; account/database/publishing approvals remain separate.
+The deployed application uses one Vercel HTTPS origin with Neon PostgreSQL. See [deployment instructions](docs/DEPLOYMENT.md) and [M5 verification](docs/M5-VERIFICATION.md). The candidate used Hobby/Free accounts without a payment card. Free-tier quotas, cold starts and provider availability apply; this is an assessment demo without an uptime SLA. Notifications synchronize in-app and do not deliver offline push/email. No account upgrades or extra paid services are required by this project.
 
 ## Project layout
 
 ```text
 frontend/src/             React pages, forms, session/API integration and components
-backend/src/              Express API, security, database access, CLI and tests
+backend/src/              HTTP handlers, security, runtime, database access and tests
+backend/src/services/     Authentication, work and notification application operations
 backend/prisma/           Schema and versioned migrations
 tests/e2e/                Browser integration test
 .github/workflows/        CI definition
@@ -93,6 +96,6 @@ AGENTS.md                 Approved project instructions and approval gates
 
 ## Delivery and attribution
 
-The target is 26 October 2026, Asia/Dhaka, ahead of the invitation's 27 October deadline. Source: [GitHub repository](https://github.com/masud-rana-pro/smart-task-project-management-system). Live hosting is not yet deployed.
+The target is 26 October 2026, Asia/Dhaka. Source: [GitHub repository](https://github.com/masud-rana-pro/smart-task-project-management-system). The working provider domain is the submission URL; optional masud.root.sx is pending parent-domain ownership verification and has not replaced it.
 
-AI assistance: OpenAI Codex assisted requirement analysis, planning, scaffolding integration, code and tests. Official generators created standard starter files. See [AI work log](docs/AI-WORK-LOG.md) for actual contributions and corrections. The final one-page AI Usage Report and candidate contribution statement will be completed using verified work, without invented authorship.
+AI assistance: OpenAI Codex assisted requirement analysis, planning, scaffolding integration, implementation, tests and documentation. Official generators created standard starter files. Most code/tests were AI-assisted; candidate decisions/setup are attributed separately. See the [AI work log](docs/AI-WORK-LOG.md), [one-page report](output/pdf/AI-Usage-Report.pdf), [editable report](docs/AI-USAGE-REPORT.md) and [project description](docs/PROJECT-DESCRIPTION.md). The [walkthrough](docs/WALKTHROUGH.md) prepares the candidate's explanation; reading it does not establish completed rehearsal or understanding.

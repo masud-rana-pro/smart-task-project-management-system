@@ -19,24 +19,24 @@ During development Vite proxies /api to Express. One Vercel project serves compi
 
 ## Proposed libraries and purpose
 
-| Area          | Proposal                                       | Purpose                                                                  |
-| ------------- | ---------------------------------------------- | ------------------------------------------------------------------------ |
-| Frontend      | React, TypeScript, Vite                        | Responsive SPA and build tooling                                         |
-| Navigation    | React Router                                   | Protected routes and page navigation                                     |
-| Remote state  | TanStack Query                                 | API cache, invalidation, loading/error handling                          |
-| Forms         | React Hook Form and Zod                        | Form state and runtime validation                                        |
-| UI            | Global application CSS/design tokens and semantic HTML | Consistent accessible layout without an extra UI framework          |
-| Charts        | Recharts                                       | Accessible supporting project progress visual; include text values       |
-| API           | Express, TypeScript, Zod                       | REST routes, middleware and validated payloads                           |
-| Persistence   | Prisma ORM with PostgreSQL                     | Typed queries and reviewed versioned SQL migrations                      |
-| Sessions      | express-session, connect-pg-simple, pg         | PostgreSQL-backed sessions across instances                              |
-| Passwords     | Node crypto scrypt                             | Salted, parameterized password hashing with timing-safe verification     |
-| HTTP security | Helmet and explicit origin/CSRF checks         | Security headers and state-changing request protection                   |
-| Logging       | Pino with redaction                            | Structured errors/request logs without credentials or cookie contents    |
-| Tests         | Vitest, Supertest, Testing Library, Playwright | Business rules, real-database API integration, UI and browser workflows  |
-| Quality       | ESLint, Prettier, TypeScript strict checks     | Consistency and static checks                                            |
-| Automation    | GitHub Actions                                 | Install, checks, tests, build; isolated PostgreSQL service for API tests |
-| Containers    | Dockerfiles and Compose                        | Reproducible frontend/backend/database run path                          |
+| Area          | Proposal                                               | Purpose                                                                  |
+| ------------- | ------------------------------------------------------ | ------------------------------------------------------------------------ |
+| Frontend      | React, TypeScript, Vite                                | Responsive SPA and build tooling                                         |
+| Navigation    | React Router                                           | Protected routes and page navigation                                     |
+| Remote state  | TanStack Query                                         | API cache, invalidation, loading/error handling                          |
+| Forms         | React Hook Form and Zod                                | Form state and runtime validation                                        |
+| UI            | Global application CSS/design tokens and semantic HTML | Consistent accessible layout without an extra UI framework               |
+| Charts        | Recharts                                               | Accessible supporting project progress visual; include text values       |
+| API           | Express, TypeScript, Zod                               | REST routes, middleware and validated payloads                           |
+| Persistence   | Prisma ORM with PostgreSQL                             | Typed queries and reviewed versioned SQL migrations                      |
+| Sessions      | express-session, connect-pg-simple, pg                 | PostgreSQL-backed sessions across instances                              |
+| Passwords     | Node crypto scrypt                                     | Salted, parameterized password hashing with timing-safe verification     |
+| HTTP security | Helmet and explicit origin/CSRF checks                 | Security headers and state-changing request protection                   |
+| Logging       | Pino with redaction                                    | Structured errors/request logs without credentials or cookie contents    |
+| Tests         | Vitest, Supertest, Testing Library, Playwright         | Business rules, real-database API integration, UI and browser workflows  |
+| Quality       | ESLint, Prettier, TypeScript strict checks             | Consistency and static checks                                            |
+| Automation    | GitHub Actions                                         | Install, checks, tests, build; isolated PostgreSQL service for API tests |
+| Containers    | Dockerfiles and Compose                                | Reproducible frontend/backend/database run path                          |
 
 Confirm currently supported mutually compatible versions before installation; use npm lockfiles and npm ci for reproduction. Prisma API/config differs across major versions; consult the selected version's documentation. Use a small bounded runtime connection pool and the provider's pooled connection where appropriate; migrations use a suitable direct database connection. Prisma connections and the session-store connection pool both count toward the database budget.
 

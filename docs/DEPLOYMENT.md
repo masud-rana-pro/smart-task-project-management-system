@@ -1,6 +1,6 @@
 # Deployment preparation and operator checklist
 
-Status: Vercel Hobby and Neon Free accounts are ready. The dedicated Singapore/PostgreSQL 17 database, scoped runtime role, migrations and private evaluator Admin have been verified. GitHub connection/Import configuration is approved; its completion is awaiting candidate confirmation. Public application deployment remains unapproved. Follow the separate publishing gate in AGENTS.md.
+Status: the approved Vercel Hobby/Neon Free deployment is live at https://smart-task-project-management-syste-delta.vercel.app. The dedicated PostgreSQL 17 database, scoped runtime role, migrations, private evaluator Admin and authenticated hosted browser workflows have been verified. Details and source IDs are in M5-VERIFICATION.md. The instructions below explain reproduction; new provider actions still follow AGENTS.md.
 
 ## Proposed provider settings
 
@@ -12,7 +12,7 @@ Create a dedicated Neon Free project using PostgreSQL 17 and a nearby compatible
 
 ## Production environment names
 
-Ignored .local/vercel-production.env contains only runtime settings and a new session secret. APP_ORIGIN uses the proposed project hostname https://smart-task-project-management-system.vercel.app; confirm the actual assigned production domain and update/redeploy if it differs. Owner migration credentials and evaluator Admin passwords are excluded. Configure these values for Production only; do not share this file in chat or commit it.
+Ignored .local/vercel-production.env contains only runtime settings and a new session secret. APP_ORIGIN is https://smart-task-project-management-syste-delta.vercel.app, the exact current production origin. Owner migration credentials and evaluator Admin passwords are excluded. Configure runtime secrets for Production only; do not share this file in chat or commit it. A changed domain requires reviewed origin configuration and redeployment, followed by a new CSRF/login check.
 
 | Variable         | Purpose                                                                                                |
 | ---------------- | ------------------------------------------------------------------------------------------------------ |
