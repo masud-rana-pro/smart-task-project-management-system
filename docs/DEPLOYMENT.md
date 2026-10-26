@@ -1,16 +1,18 @@
 # Deployment preparation and operator checklist
 
-Status: local configuration in preparation; no hosting accounts, hosted database or public deployment have been created. Follow the approved milestones and separate account/database/publishing gates in AGENTS.md.
+Status: Vercel Hobby and Neon Free accounts are ready. The dedicated Singapore/PostgreSQL 17 database, scoped runtime role, migrations and private evaluator Admin have been verified. GitHub connection/Import configuration is approved; its completion is awaiting candidate confirmation. Public application deployment remains unapproved. Follow the separate publishing gate in AGENTS.md.
 
 ## Proposed provider settings
 
-Use a personal Vercel Hobby project with the repository root as Root Directory, framework Other, npm ci installation, the committed build command and frontend/dist output. The build generates Prisma and compiles both applications. The root api/index.mjs exports the compiled Express application; API requests route to that function while SPA routes use index.html. A single browser origin preserves the cookie and CSRF model.
+Use a personal Vercel Hobby project with the repository root as Root Directory, framework Other, npm ci --include=dev installation, the committed build command and frontend/dist output. Build tools and TypeScript declarations are required even when NODE_ENV=production; explicit --include=dev prevents npm from omitting them during the build. Function runtime still uses production settings. The build generates Prisma and compiles both applications. The root api/index.mjs exports the compiled Express application; API requests route to that function while SPA routes use index.html. A single browser origin preserves the cookie and CSRF model.
 
 Vercel owns function lifecycle: the function entrypoint does not start a port listener or register signal handlers. The standalone server and function share the same runtime composition. One bounded PostgreSQL pool is reused per warm instance and registered with attachDatabasePool. Serverless scaling can still create multiple pools; monitor the actual provider connection/compute limits.
 
 Create a dedicated Neon Free project using PostgreSQL 17 and a nearby compatible region when available. Confirm the actual quotas and no-card flow before creating it. Use a dedicated application role without administrative privileges and a separately controlled migration owner. Never send connection strings in chat. Use TLS verification; do not disable certificate checks to make a connection succeed.
 
 ## Production environment names
+
+Ignored .local/vercel-production.env contains only runtime settings and a new session secret. APP_ORIGIN uses the proposed project hostname https://smart-task-project-management-system.vercel.app; confirm the actual assigned production domain and update/redeploy if it differs. Owner migration credentials and evaluator Admin passwords are excluded. Configure these values for Production only; do not share this file in chat or commit it.
 
 | Variable         | Purpose                                                                                                |
 | ---------------- | ------------------------------------------------------------------------------------------------------ |

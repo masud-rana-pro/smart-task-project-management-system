@@ -1,6 +1,6 @@
 # M5 preparation verification
 
-Status: preparation CI and hosted database setup passed on 26 October 2026. The candidate created Vercel Hobby and Neon Free accounts and the dedicated Neon project. Public application deployment and evaluator Admin bootstrap remain pending separate approval.
+Status: preparation CI, hosted database setup and approved evaluator Admin bootstrap passed on 26 October 2026. The candidate created Vercel Hobby and Neon Free accounts and the dedicated Neon project. Public application deployment remains pending separate approval.
 
 M4 passed GitHub CI on 2754bc8, run 40219897500, satisfying the candidate's condition for starting M5.
 
@@ -42,3 +42,13 @@ The candidate created Vercel Hobby and Neon Free accounts privately and reported
 - Pooled TLS login as smart_task_app passed. Verified no administrative flags, public-schema CREATE or migration-table SELECT, and all four DML privileges on every required table. No application data written by verification.
 - Initial endpoint guard rejected the additional c-2 hostname segment; corrected before any database mutation. Corrected pooled-host generation to place -pooler on the first DNS label.
 - Proposed Vercel function region is now explicitly sin1 (Singapore), matching the database; this configuration has not yet been deployed.
+
+## Approved evaluator account
+
+The candidate separately approved a private Bright Mind Demo Admin account, admin@example.invalid. Bootstrap used the existing compiled Admin CLI against the exact pooled runtime target, without changing existing account passwords. A random password is saved only in ignored .local/hosted-admin.env. A database lookup verified ADMIN role and the application's scrypt verifier confirmed the stored password hash matches the private password. No email was sent; no credentials or hashes were displayed. Deployed browser login remains to be verified after publication.
+
+The candidate also approved GitHub/Vercel connection limited to masud-rana-pro/smart-task-project-management-system and opening Import configuration. That approval excludes pressing Deploy; the candidate is receiving manual setup instructions.
+
+## First Vercel build failure
+
+The candidate imported the runtime environment and proceeded with the first deployment after requesting and receiving the deployment go-ahead. Vercel built main at 86ebf5a, but production NODE_ENV caused plain npm ci to omit dev dependencies. The frontend could not resolve vite/client, @vitejs/plugin-react and vitest/config; backend compilation could not resolve its TypeScript declarations. Updated the platform install command to npm ci --include=dev. CI's install step now uses that command with NODE_ENV=production so the build-tool dependency regression is covered. Runtime production behavior remains unchanged. Local clean-install/build reproduction is in progress; public deployment is not yet verified.
