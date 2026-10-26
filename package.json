@@ -9,7 +9,7 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run test --workspaces",
+    "test": "npm run test --workspaces && node --test tests/deployment-routing.test.mjs",
     "test:e2e": "npm run build -w backend && playwright test",
     "db:generate": "npm run db:generate -w backend",
     "db:validate": "npm run db:validate -w backend",
