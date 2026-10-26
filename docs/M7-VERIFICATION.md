@@ -17,4 +17,10 @@ An initial React lint warning prompted switching React Hook Form watch to useWat
 
 npm run test:e2e with PLAYWRIGHT_CHANNEL=chrome passed all ten desktop/mobile stories in 2.6 minutes, exit 0. This includes both new reset stories and all eight existing workflow regressions. The reset screen passed the selected solid-background contrast checks and a viewport-width assertion on both device profiles. These focused checks are not a full accessibility certification. Final formatting/diff checks passed.
 
-Production is unchanged until separately approved publication. No real user's password has been changed through this feature during development. A public commit/push would trigger Git-connected deployment, so that action is held for the publishing approval. On approval, verify CI and deployed behavior using a new UUID-tagged fictional member only, then remove that fixture and preserve existing candidate data/accounts.
+## Approved publication and live verification
+
+The candidate separately approved commit/push, Git-connected deployment and a scoped fictional-member smoke test. Implementation commit 64bdb0c passed [GitHub CI run 40380306234](https://github.com/masud-rana-pro/smart-task-project-management-system/actions/runs/40380306234). Vercel deployment dpl_BngBhaiFksazxo4LYCNHdDTTtmXt became READY for that exact commit on the existing HTTPS production alias.
+
+node tmp/verify-live-member-reset.mjs exited 0. Its desktop Admin/mobile Member browser flow passed reset through the Admin screen, member endpoint attacks rejected with 403, hosted password-hash verification, previous-session rejection, old-password rejection, replacement-password login, unchanged Admin identity and both logouts. Zero browser JavaScript exceptions were observed. The selected member's stored role remained TEAM_MEMBER and the password inputs cleared after success.
+
+Cleanup removed only the run's UUID-tagged fictional Member and captured verification sessions. Existing candidate accounts, projects and tasks were preserved. The candidate's real Member password was not reset by this smoke test; they can now use Member access to perform that action themselves. No schema migration, hosted grant, dependency installation or provider setting change was needed.

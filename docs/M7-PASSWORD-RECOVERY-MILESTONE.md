@@ -1,6 +1,6 @@
 # M7 - Password recovery proposal
 
-Status: the candidate approved code/tests, declined email and recovery-code verification, then explicitly selected Admin-only member password reset on 27 October 2026. This decision supersedes the original self-service proposal below. No public recovery endpoint, reset token, email provider or new dependency is being added. Live publication requires the separate gate in AGENTS.md.
+Status: the candidate approved code/tests, selected Admin-only reset and separately approved commit/push, live publication and scoped verification on 27 October 2026. Source 64bdb0c passed CI and deployed reset/login checks; see M7-VERIFICATION.md. This supersedes the original self-service proposal below. No public recovery endpoint, reset token, email provider or new dependency was added.
 
 ## Approved implementation
 

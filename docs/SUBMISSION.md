@@ -10,6 +10,7 @@
 - Brief project description: PROJECT-DESCRIPTION.md
 - Verification: M1/M2/M3/M4/M5 verification records and FINAL-VERIFICATION.md
 - Candidate review: WALKTHROUGH.md
+- Admin-only Member password reset enhancement: M7-VERIFICATION.md; candidate-reported guided checks: MANUAL-ACCEPTANCE.md
 - Representative desktop screenshot: ../output/evidence/live-dashboard.png (fictional test data, removed from the database after verification)
 
 ## Candidate's final actions

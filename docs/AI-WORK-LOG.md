@@ -4,6 +4,8 @@
 
 During candidate-reported manual testing, Member login did not accept the supplied credentials. The candidate asked for Forgot Password, approved implementation preparation and then declined email verification/recovery codes. After discussing the account-takeover risk of unverified anonymous reset, the candidate explicitly selected Admin-only Member reset. Codex implemented the role-protected HTTP/service/UI flow, transactional password/session update, internal credential fingerprint guard against delayed old-credential sessions and new real-PostgreSQL/browser regressions. No new dependency or schema change was needed. Hosted publication remains a separate approval gate; candidate-supplied existing credentials are not displayed or changed as part of preparation.
 
+After separate publication approval, source 64bdb0c passed CI and deployed on the existing origin. Codex verified the complete Admin-screen reset -> hosted credential/session state -> old session/password rejection -> replacement Member login -> logout flow using only a new fictional Member. Scoped cleanup preserved existing candidate data and accounts. Results are recorded in M7-VERIFICATION.md; candidate manual testing of their own Member account remains separate.
+
 This is a factual working log, not the final one-page report. The final report must describe completed work and verification. Do not invent candidate implementation work or incorrect suggestions to meet the assignment format.
 
 ## Tool and contributions

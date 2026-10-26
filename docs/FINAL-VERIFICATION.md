@@ -1,5 +1,7 @@
 # Final verification record
 
+27 October enhancement: Admin-assisted Member password reset is now implemented and live. Its 43 code tests, ten desktop/mobile workflows, passing CI and scoped hosted reset/login evidence are recorded in M7-VERIFICATION.md. The original 26 October record below remains historical evidence of the initial submission milestone.
+
 Date: 26 October 2026, Asia/Dhaka. Scope: post-SoC application source f7d0cb3 and M6 deliverables.
 
 ## Application evidence
