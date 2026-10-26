@@ -43,6 +43,8 @@ Runtime database/session access shares one bounded PostgreSQL pool. Hosted runti
 
 ## Admin and fictional sample data
 
+Admins can open **Member access** to reset a Team Member password after confirming their identity directly. The new password is entered twice; existing member sessions end. Admin accounts cannot be reset from this screen. There is no public, verification-free password recovery endpoint. Share replacement credentials privately. On rollout of this feature, existing sessions need a fresh login because sessions now carry an internal credential fingerprint.
+
 Set ADMIN_NAME, ADMIN_EMAIL and a unique ADMIN_PASSWORD locally, then run `npm run admin:create`. This creates an Admin if absent; it does not promote an existing member or reset an existing password. Public registration always creates Team Members.
 
 For sample data in the approved local smart_task_dev database, also set DEMO_MEMBER_PASSWORD to a different strong password. In PowerShell:

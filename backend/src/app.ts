@@ -69,7 +69,7 @@ export function createApp(
     });
     app.use('/api', sessions.middleware, csrfProtection(security.origin));
     app.use('/api/auth', authRoutes(db, security));
-    app.use('/api', requireIdentity(db));
+    app.use('/api', requireIdentity(db, security.sessionSecret));
     app.use('/api/notifications', notificationRoutes(db));
     app.use('/api', workRoutes(db));
   }

@@ -7,6 +7,7 @@ import AuthPage from './pages/AuthPage';
 import ProjectsPage from './pages/ProjectsPage';
 import TasksPage from './pages/TasksPage';
 import NotificationsPage from './pages/NotificationsPage';
+import MembersPage from './pages/MembersPage';
 import { Loading } from './components/ui';
 import './App.css';
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
@@ -35,6 +36,7 @@ export default function App() {
                 <Route path="/projects" element={<ProjectsPage />} />
                 <Route path="/tasks" element={<TasksPage />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
+                <Route path="/members" element={<MembersPage />} />
                 <Route
                   path="*"
                   element={

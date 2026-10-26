@@ -8,6 +8,8 @@ import {
   currentUser,
   newToken,
   requireIdentity,
+  requireAdmin,
+  credentialTag,
 } from './security.js';
 import type { SecurityConfig } from './security.js';
 
@@ -40,6 +42,10 @@ export function authRoutes(db: Database, config: SecurityConfig) {
     );
     req.session.userId = user.id;
     req.session.issuedAt = Date.now();
+    req.session.credentialTag = credentialTag(
+      config.sessionSecret,
+      user.passwordHash,
+    );
     req.session.csrf = newToken();
     await new Promise<void>((resolve, reject) =>
       req.session.save((error) => (error ? reject(error) : resolve())),
@@ -56,22 +62,51 @@ export function authRoutes(db: Database, config: SecurityConfig) {
       csrfToken: req.session.csrf,
     });
   });
-  router.get('/me', requireIdentity(db), (req, res) =>
+  router.get(
+    '/members',
+    requireIdentity(db, config.sessionSecret),
+    requireAdmin,
+    async (_req, res) => {
+      res.json(await service.listMembers());
+    },
+  );
+  router.post(
+    '/members/:id/reset-password',
+    requireIdentity(db, config.sessionSecret),
+    requireAdmin,
+    async (req, res) => {
+      const id = input.uuid.parse(req.params.id);
+      const data = input.memberPasswordReset.parse(req.body);
+      await consumeAuthLimit(
+        db,
+        config.sessionSecret,
+        `member-reset-admin:${currentUser(req).id}`,
+        10,
+      );
+      await service.resetMemberPassword(id, data.password);
+      res.status(204).end();
+    },
+  );
+  router.get('/me', requireIdentity(db, config.sessionSecret), (req, res) =>
     res.json({ user: currentUser(req) }),
   );
-  router.post('/logout', requireIdentity(db), async (req, res) => {
-    await new Promise<void>((resolve, reject) =>
-      req.session.destroy((error) => (error ? reject(error) : resolve())),
-    );
-    res
-      .clearCookie(cookieName, {
-        path: '/',
-        httpOnly: true,
-        secure: config.secure,
-        sameSite: 'lax',
-      })
-      .status(204)
-      .end();
-  });
+  router.post(
+    '/logout',
+    requireIdentity(db, config.sessionSecret),
+    async (req, res) => {
+      await new Promise<void>((resolve, reject) =>
+        req.session.destroy((error) => (error ? reject(error) : resolve())),
+      );
+      res
+        .clearCookie(cookieName, {
+          path: '/',
+          httpOnly: true,
+          secure: config.secure,
+          sameSite: 'lax',
+        })
+        .status(204)
+        .end();
+    },
+  );
   return router;
 }

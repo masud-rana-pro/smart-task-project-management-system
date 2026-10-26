@@ -13,6 +13,8 @@ The machine-readable OpenAPI 3.1 document is served at `/api/openapi.json` (sour
 
 Registration uses the same CSRF bootstrap, accepts name/email/password (12-128 characters), creates a Team Member and returns 201. It does not automatically log in. The local bootstrap command creates the initial Admin. PostgreSQL login credentials are not application login credentials.
 
+Admin-assisted recovery: GET `/api/auth/members` lists Team Member IDs, names and emails for Admins only. POST `/api/auth/members/{id}/reset-password` accepts `{ "password": "a new private password" }` (12-128 characters), requires the Admin session/Origin/CSRF token, and returns 204. Admin targets are rejected; the member's role, identity and work are preserved. Existing member sessions are revoked, including delayed sessions bearing an old credential fingerprint. Resets are limited to ten per Admin per fifteen minutes. There is no anonymous Forgot Password endpoint or email recovery service. Existing sessions created before this feature require a fresh login after its deployment.
+
 ## Routes and permissions
 
 | Operation                    | Route                                                  | Permission                                                         |

@@ -65,6 +65,12 @@ function AuthenticatedWorkspace() {
               )}
             </NavLink>
           ))}
+          {user?.role === 'ADMIN' && (
+            <NavLink to="/members">
+              <Icon name="tasks" />
+              <span>Member access</span>
+            </NavLink>
+          )}
         </nav>
         <div className="sidebar-bottom">
           <div className="team-note">

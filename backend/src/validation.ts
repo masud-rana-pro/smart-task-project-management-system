@@ -6,6 +6,7 @@ export const status = z.enum(['TODO', 'IN_PROGRESS', 'COMPLETED']);
 export const priority = z.enum(['LOW', 'MEDIUM', 'HIGH']);
 export const email = z.string().trim().toLowerCase().pipe(z.email().max(254));
 export const password = z.string().min(12).max(128);
+export const memberPasswordReset = z.strictObject({ password });
 export const registration = z.strictObject({
   name: z.string().trim().min(1).max(120),
   email,

@@ -1,5 +1,9 @@
 # AI assistance work log
 
+## Admin-assisted recovery enhancement, 27 October 2026
+
+During candidate-reported manual testing, Member login did not accept the supplied credentials. The candidate asked for Forgot Password, approved implementation preparation and then declined email verification/recovery codes. After discussing the account-takeover risk of unverified anonymous reset, the candidate explicitly selected Admin-only Member reset. Codex implemented the role-protected HTTP/service/UI flow, transactional password/session update, internal credential fingerprint guard against delayed old-credential sessions and new real-PostgreSQL/browser regressions. No new dependency or schema change was needed. Hosted publication remains a separate approval gate; candidate-supplied existing credentials are not displayed or changed as part of preparation.
+
 This is a factual working log, not the final one-page report. The final report must describe completed work and verification. Do not invent candidate implementation work or incorrect suggestions to meet the assignment format.
 
 ## Tool and contributions

@@ -160,6 +160,34 @@ operation(
   object({ user: ref('User') }, ['user']),
 );
 operation(
+  '/api/auth/members',
+  'get',
+  'Admin: list members for password reset',
+  object({
+    users: {
+      type: 'array',
+      items: object({ id, name: text, email: { ...text, format: 'email' } }, [
+        'id',
+        'name',
+        'email',
+      ]),
+    },
+  }),
+);
+operation(
+  '/api/auth/members/{id}/reset-password',
+  'post',
+  'Admin: reset a Team Member password and revoke their sessions',
+  {},
+  {
+    empty: true,
+    input: object(
+      { password: { ...text, minLength: 12, maxLength: 128, writeOnly: true } },
+      ['password'],
+    ),
+  },
+);
+operation(
   '/api/auth/logout',
   'post',
   'Destroy the stored session and clear its cookie',

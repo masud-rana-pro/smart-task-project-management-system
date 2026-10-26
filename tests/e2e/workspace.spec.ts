@@ -2,6 +2,76 @@ import { test, expect } from './fixtures';
 import type { Page } from '@playwright/test';
 import { expectReadableContrast } from './accessibility';
 
+test('Admin resets a member password; member session expires and new login succeeds', async ({
+  page,
+  workspace,
+  browser,
+}) => {
+  const context = await browser.newContext({
+    baseURL: 'http://127.0.0.1:5173',
+  });
+  const member = await context.newPage();
+  try {
+    await login(member, workspace.memberEmail, workspace.password);
+    await expect(
+      member
+        .getByRole('navigation')
+        .getByRole('link', { name: 'Member access', exact: true }),
+    ).toHaveCount(0);
+    await login(page, workspace.adminEmail, workspace.password);
+    await page
+      .getByRole('navigation')
+      .getByRole('link', { name: 'Member access', exact: true })
+      .click();
+    await page
+      .getByLabel('Team Member', { exact: true })
+      .selectOption(workspace.memberId);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await expectReadableContrast(page);
+    const replacement = 'New fictional member password 789!';
+    await page.getByLabel('New password', { exact: true }).fill(replacement);
+    await page.getByLabel('Confirm new password').fill('Does not match');
+    await page.getByRole('checkbox').check();
+    await page
+      .getByRole('button', { name: 'Reset password', exact: true })
+      .click();
+    await expect(
+      page.getByText('Passwords must match.', { exact: true }),
+    ).toBeVisible();
+    await page.getByLabel('Confirm new password').fill(replacement);
+    await page
+      .getByRole('button', { name: 'Reset password', exact: true })
+      .click();
+    await expect(page.getByRole('status')).toContainText('Password reset.');
+    await expect(page.getByLabel('New password', { exact: true })).toHaveValue(
+      '',
+    );
+    await member.reload();
+    await expect(member).toHaveURL(/\/login$/);
+    await member.getByLabel('Email address').fill(workspace.memberEmail);
+    await member
+      .getByLabel('Password', { exact: true })
+      .fill(workspace.password);
+    await member.getByRole('button', { name: 'Sign in to workspace' }).click();
+    await expect(member.getByRole('alert')).toContainText(
+      'Email or password is incorrect.',
+    );
+    await member.getByLabel('Password', { exact: true }).fill(replacement);
+    await member.getByRole('button', { name: 'Sign in to workspace' }).click();
+    await expect(
+      member.getByRole('heading', { name: 'Hello, Browser.' }),
+    ).toBeVisible();
+    await member.goto('/members');
+    await expect(member).toHaveURL(/\/$/);
+  } finally {
+    await context.close();
+  }
+});
+
 test('Task search, combined filters, sorting, pagination and empty reset work together', async ({
   page,
   workspace,

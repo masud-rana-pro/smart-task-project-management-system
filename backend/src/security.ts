@@ -17,6 +17,7 @@ declare module 'express-session' {
     userId?: string;
     csrf?: string;
     issuedAt?: number;
+    credentialTag?: string;
   }
 }
 declare module 'express-serve-static-core' {
@@ -66,6 +67,8 @@ export function createSessionMiddleware(pool: Pool, config: SecurityConfig) {
   return { middleware, store };
 }
 export const newToken = () => randomBytes(32).toString('hex');
+export const credentialTag = (secret: string, passwordHash: string) =>
+  createHmac('sha256', secret).update(passwordHash).digest('hex');
 export const csrfProtection =
   (origin: string): RequestHandler =>
   (req, _res, next) => {
@@ -92,7 +95,7 @@ export const csrfProtection =
     }
     next();
   };
-export function requireIdentity(db: Database): RequestHandler {
+export function requireIdentity(db: Database, secret: string): RequestHandler {
   return async (req, _res, next) => {
     if (
       !req.session.userId ||
@@ -103,10 +106,25 @@ export function requireIdentity(db: Database): RequestHandler {
     }
     const user = await db.user.findUnique({
       where: { id: req.session.userId },
-      select: identitySelect,
+      select: { ...identitySelect, passwordHash: true },
     });
     if (!user) throw new ApiError(401, 'UNAUTHENTICATED', 'Please log in.');
-    req.identity = user;
+    const expected = credentialTag(secret, user.passwordHash);
+    if (
+      !req.session.credentialTag ||
+      !/^[a-f0-9]{64}$/.test(req.session.credentialTag) ||
+      !timingSafeEqual(
+        Buffer.from(expected),
+        Buffer.from(req.session.credentialTag),
+      )
+    )
+      throw new ApiError(401, 'UNAUTHENTICATED', 'Please log in again.');
+    req.identity = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
     next();
   };
 }

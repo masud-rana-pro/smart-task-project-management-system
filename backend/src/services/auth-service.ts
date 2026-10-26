@@ -31,7 +31,43 @@ export function createAuthService(db: Database) {
         name: user.name,
         email: user.email,
         role: user.role,
+        passwordHash: user.passwordHash,
       };
+    },
+    async listMembers() {
+      return {
+        users: await db.user.findMany({
+          where: { role: 'TEAM_MEMBER' },
+          select: { id: true, name: true, email: true },
+          orderBy: [{ name: 'asc' }, { id: 'asc' }],
+        }),
+      };
+    },
+    async resetMemberPassword(id: string, password: string) {
+      const target = await db.user.findUnique({
+        where: { id },
+        select: { role: true },
+      });
+      if (target?.role !== 'TEAM_MEMBER')
+        throw new ApiError(
+          404,
+          'MEMBER_NOT_FOUND',
+          'Select an existing Team Member.',
+        );
+      const passwordHash = await hashPassword(password);
+      await db.$transaction(async (tx) => {
+        const changed = await tx.user.updateMany({
+          where: { id, role: 'TEAM_MEMBER' },
+          data: { passwordHash },
+        });
+        if (changed.count !== 1)
+          throw new ApiError(
+            404,
+            'MEMBER_NOT_FOUND',
+            'Select an existing Team Member.',
+          );
+        await tx.$executeRaw`DELETE FROM sessions WHERE sess->>'userId' = ${id}`;
+      });
     },
     async cleanupExpiredState() {
       await db.$executeRaw`DELETE FROM sessions WHERE expire < now()`;
