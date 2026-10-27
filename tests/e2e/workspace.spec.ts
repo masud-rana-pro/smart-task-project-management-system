@@ -329,6 +329,25 @@ test('Admin manages a project and task, filters results, and cannot delete a non
   await page
     .getByRole('button', { name: 'Create project', exact: true })
     .click();
+  await dialog
+    .getByRole('button', { name: 'Create project', exact: true })
+    .click();
+  await expect(
+    dialog.getByLabel('Project name', { exact: true }),
+  ).toBeFocused();
+  await expect(
+    dialog.getByLabel('Project name', { exact: true }),
+  ).toHaveAccessibleDescription('Enter a project name.');
+  await expect(
+    dialog.getByLabel('Description', { exact: true }),
+  ).toHaveAccessibleDescription('Describe the project.');
+  await expect(
+    dialog.getByLabel('Project name', { exact: true }),
+  ).toHaveAttribute('aria-invalid', 'true');
+  await page.screenshot({
+    path: info.outputPath('project-form.png'),
+    fullPage: true,
+  });
   await dialog.getByLabel('Project name').fill('Workflow delivery');
   await dialog
     .getByLabel('Description')
@@ -337,12 +356,37 @@ test('Admin manages a project and task, filters results, and cannot delete a non
     .getByRole('button', { name: 'Create project', exact: true })
     .click();
   await expect(dialog).not.toBeVisible();
+  const newProject = page
+    .locator('.project-card')
+    .filter({ hasText: 'Workflow delivery' });
+  await expect(newProject.getByText('0 tasks', { exact: true })).toBeVisible();
+  await expect(
+    newProject.getByText('No tasks yet', { exact: true }),
+  ).toBeVisible();
   await page
     .getByRole('navigation')
     .getByRole('link', { name: 'Tasks', exact: true })
     .click();
   await page.getByRole('button', { name: 'Create task', exact: true }).click();
   dialog = page.getByRole('dialog');
+  await dialog
+    .getByRole('button', { name: 'Create task', exact: true })
+    .click();
+  await expect(dialog.getByLabel('Task title', { exact: true })).toBeFocused();
+  await expect(
+    dialog.getByLabel('Task title', { exact: true }),
+  ).toHaveAccessibleDescription('Enter a task title.');
+  await expect(
+    dialog.getByRole('combobox', { name: 'Project', exact: true }),
+  ).toHaveAccessibleDescription('Select a project.');
+  await expect(
+    dialog.getByRole('combobox', { name: 'Assignee', exact: true }),
+  ).toHaveAccessibleDescription('Select an assignee.');
+  await expect(
+    dialog.getByLabel('Due date', { exact: true }),
+  ).toHaveAccessibleDescription(
+    'Due through the end of this day in Bangladesh time. Choose a real calendar date (1900 or later).',
+  );
   await dialog.getByLabel('Task title').fill('Verify deployment checklist');
   await dialog
     .getByLabel('Description')
@@ -357,6 +401,16 @@ test('Admin manages a project and task, filters results, and cannot delete a non
   await dialog
     .getByRole('combobox', { name: 'Priority', exact: true })
     .selectOption('HIGH');
+  await page.screenshot({
+    path: info.outputPath('task-form.png'),
+    fullPage: true,
+  });
+  await expect(
+    dialog.getByRole('heading', { name: 'Create task', exact: true }),
+  ).toBeInViewport();
+  await expect(
+    dialog.getByRole('button', { name: 'Close dialog' }),
+  ).toBeInViewport();
   await dialog
     .getByRole('button', { name: 'Create task', exact: true })
     .click();
@@ -392,6 +446,46 @@ test('Admin manages a project and task, filters results, and cannot delete a non
     .getByRole('navigation')
     .getByRole('link', { name: 'Projects', exact: true })
     .click();
+  await expect(newProject.getByText('1 task', { exact: true })).toBeVisible();
+  await expect(newProject.getByRole('progressbar')).toHaveAttribute(
+    'aria-valuenow',
+    '0',
+  );
+  await expect(newProject.getByRole('progressbar')).toHaveAttribute(
+    'aria-valuetext',
+    '0 of 1 tasks complete',
+  );
+  await page.route('**/api/dashboard', (route) =>
+    route.fulfill({
+      status: 503,
+      json: {
+        error: {
+          code: 'TEMPORARY_ERROR',
+          message: 'Progress is temporarily unavailable.',
+        },
+      },
+    }),
+  );
+  await page.reload();
+  await expect(
+    page.getByRole('button', { name: 'Retry progress' }),
+  ).toBeVisible();
+  await expect(newProject.getByText('Progress unavailable')).toBeVisible();
+  await expect(newProject.getByRole('progressbar')).toHaveCount(0);
+  await page.unroute('**/api/dashboard');
+  await page.getByRole('button', { name: 'Retry progress' }).click();
+  await expect(newProject.getByRole('progressbar')).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await expectReadableContrast(page);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({
+    path: info.outputPath('projects.png'),
+    fullPage: true,
+  });
   await page
     .getByRole('button', { name: 'Delete Workflow delivery', exact: true })
     .click();

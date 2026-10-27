@@ -48,6 +48,11 @@ export default function ProjectsPage() {
           Retry projects
         </button>
       )}
+      {dashboard.error && (
+        <button className="secondary" onClick={() => void dashboard.refetch()}>
+          Retry progress
+        </button>
+      )}
       {projects.isPending ? (
         <Loading />
       ) : !projects.data ? null : !projects.data.projects.length ? (
@@ -64,6 +69,7 @@ export default function ProjectsPage() {
             const progress = dashboard.data?.projects.find(
               (item) => item.id === project.id,
             );
+            const taskCount = project._count?.tasks ?? 0;
             return (
               <article className="project-card" key={project.id}>
                 <div className="project-card-top">
@@ -71,7 +77,7 @@ export default function ProjectsPage() {
                     <Icon name="projects" />
                   </span>
                   <span className="muted">
-                    {project._count?.tasks ?? 0} tasks
+                    {taskCount} {taskCount === 1 ? 'task' : 'tasks'}
                   </span>
                 </div>
                 <h2>
@@ -82,12 +88,35 @@ export default function ProjectsPage() {
                 <p className="project-description">{project.description}</p>
                 <div className="project-progress">
                   <div>
-                    <span>Progress</span>
+                    <span>Completion</span>
                     <strong>{progress ? `${progress.progress}%` : '—'}</strong>
                   </div>
-                  <div className="progress-track">
-                    <span style={{ width: `${progress?.progress ?? 0}%` }} />
-                  </div>
+                  {progress ? (
+                    <>
+                      <div
+                        className="progress-track"
+                        role="progressbar"
+                        aria-label={`${project.name} completion`}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={progress.progress}
+                        aria-valuetext={`${progress.completedTasks} of ${progress.totalTasks} tasks complete`}
+                      >
+                        <span style={{ width: `${progress.progress}%` }} />
+                      </div>
+                      <p className="project-progress-note">
+                        {progress.totalTasks
+                          ? `${progress.completedTasks} of ${progress.totalTasks} complete`
+                          : 'No tasks yet'}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="project-progress-note">
+                      {dashboard.error
+                        ? 'Progress unavailable'
+                        : 'Loading progress…'}
+                    </p>
+                  )}
                 </div>
                 <div className="project-card-footer">
                   <Link to={`/tasks?projectId=${project.id}`}>

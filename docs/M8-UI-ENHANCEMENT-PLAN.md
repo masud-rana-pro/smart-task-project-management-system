@@ -31,3 +31,7 @@ The candidate approved local M8B work, conditional on the previous documentation
 The candidate subsequently resumed UI enhancement and final polish on 27 October. M8B local implementation/testing is active again under that approval; M8B-VERIFICATION.md records the changes and checks. External publication remains a separate step.
 
 Pending candidate approval: refine the shared sidebar/header and mobile navigation spacing, give page names readable labels, improve dashboard total-card hierarchy and project-progress readability, and make earliest-deadline rows wrap cleanly. Review loading, retry and empty states; keep existing dashboard definitions, API permissions and chart data intact. Use installed dependencies only. Verify both roles, dashboard values against the existing API fixtures, task/project navigation and desktop/mobile layout; save fictional-data screenshots. Local implementation/testing is a separate approval from commit/push and live publication.
+
+## M8C Projects and resource forms
+
+The candidate approved local M8C implementation and testing. The prerequisite documentation CI run 40470012590 completed successfully before implementation began. Scope: project card spacing and description readability, singular task counts, completion details, project/task form labels and validation associations, and narrow-screen actions. Existing dependencies and API rules are retained. M8C-VERIFICATION.md will record the local checks and screenshots; commit/push and publication require separate approval.

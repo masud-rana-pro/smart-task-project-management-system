@@ -106,3 +106,9 @@ Codex reread both assignment pages and the supplied email. The final description
 After submission preparation, the candidate explicitly resumed UI enhancement. Codex continued the previously approved Overview/navigation scope using existing dependencies. Work adds API-derived overall completion, readable totals/progress, accessible progress-bar values, role-appropriate empty guidance, deadline retry recovery and compact shared navigation. Application permissions and data definitions are retained.
 
 Browser regressions now compare Overview values with the real API for both roles, follow project progress into filtered Tasks and inject one failed deadline response to verify recovery without a misleading empty state. Full code checks passed 43 tests and both builds. Final browser/screenshot outcomes are recorded in M8B-VERIFICATION.md. This entry records AI-authored changes; no new candidate device logs, code authorship or publication are claimed.
+
+## M8C Projects and forms, 27 October 2026
+
+The candidate approved local Projects/form polish after the preceding documentation CI passed. Codex corrected singular task wording, added accessible completion details and progress retry recovery, improved card/action layout, and associated form validation messages with stable field names. Existing dependencies, API permissions and database behavior were preserved.
+
+The full code check passed 43 tests and both builds; all ten desktop/mobile browser workflows passed. New assertions cover blank-form feedback, invalid-field focus, task counts and progress recovery. Visual review then prompted a small sticky dialog-heading refinement, with a focused regression check. M8C-VERIFICATION.md records the final results and screenshots. The candidate has not yet authorized publishing this milestone; no production data was changed.

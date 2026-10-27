@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -38,6 +39,7 @@ export function ProjectForm({
   onClose: () => void;
 }) {
   const client = useQueryClient();
+  const fieldId = useId();
   const {
     register,
     handleSubmit,
@@ -67,29 +69,47 @@ export function ProjectForm({
       title={project ? 'Edit project' : 'Create project'}
       onClose={onClose}
     >
-      <form onSubmit={handleSubmit((data) => mutation.mutate(data))} noValidate>
+      <p className="form-intro">
+        Give your team a clear name and purpose to work toward. Both fields are
+        required.
+      </p>
+      <form
+        className="resource-form"
+        onSubmit={handleSubmit((data) => mutation.mutate(data))}
+        noValidate
+      >
         <label>
-          Project name
+          <span id={`${fieldId}-name-label`}> Project name </span>
           <input
             {...register('name')}
+            aria-labelledby={`${fieldId}-name-label`}
+            aria-describedby={errors.name ? `${fieldId}-name-error` : undefined}
             maxLength={160}
             aria-invalid={!!errors.name}
             autoFocus
           />
           {errors.name && (
-            <span className="field-error">{errors.name.message}</span>
+            <span className="field-error" id={`${fieldId}-name-error`}>
+              {errors.name.message}
+            </span>
           )}
         </label>
         <label>
-          Description
+          <span id={`${fieldId}-description-label`}> Description </span>
           <textarea
             {...register('description')}
+            aria-labelledby={`${fieldId}-description-label`}
+            aria-describedby={
+              errors.description ? `${fieldId}-description-error` : undefined
+            }
             rows={4}
             maxLength={4000}
             aria-invalid={!!errors.description}
           />
           {errors.description && (
-            <span className="field-error">{errors.description.message}</span>
+            <span className="field-error" id={`${fieldId}-description-error`}>
+              {errors.description.message}
+            </span>
           )}
         </label>
         <Alert error={mutation.error} />
@@ -117,6 +137,7 @@ export function TaskForm({
   onClose: () => void;
 }) {
   const client = useQueryClient();
+  const fieldId = useId();
   const projects = useQuery({
     queryKey: ['projects'],
     queryFn: () => api<{ projects: Project[] }>('/projects'),
@@ -164,33 +185,63 @@ export function TaskForm({
   });
   return (
     <Modal title={task ? 'Edit task' : 'Create task'} onClose={onClose}>
-      <form onSubmit={handleSubmit((data) => mutation.mutate(data))} noValidate>
+      <p className="form-intro">
+        Set the work, owner and deadline. All fields except description are
+        required.
+      </p>
+      <form
+        className="resource-form"
+        onSubmit={handleSubmit((data) => mutation.mutate(data))}
+        noValidate
+      >
         <label>
-          Task title
+          <span id={`${fieldId}-title-label`}> Task title </span>
           <input
             {...register('title')}
+            aria-labelledby={`${fieldId}-title-label`}
+            aria-describedby={
+              errors.title ? `${fieldId}-title-error` : undefined
+            }
             maxLength={200}
             aria-invalid={!!errors.title}
             autoFocus
           />
           {errors.title && (
-            <span className="field-error">{errors.title.message}</span>
+            <span className="field-error" id={`${fieldId}-title-error`}>
+              {errors.title.message}
+            </span>
           )}
         </label>
         <label>
-          Description
+          <span id={`${fieldId}-description-label`}> Description </span>
           <textarea
             {...register('description')}
+            aria-labelledby={`${fieldId}-description-label`}
+            aria-describedby={
+              errors.description ? `${fieldId}-description-error` : undefined
+            }
             maxLength={8000}
             rows={3}
             aria-invalid={!!errors.description}
           />
+          {errors.description && (
+            <span className="field-error" id={`${fieldId}-description-error`}>
+              {errors.description.message}
+            </span>
+          )}
+          <span className="field-hint">
+            Optional. Add context or acceptance details.
+          </span>
         </label>
         <div className="form-grid">
           <label>
-            Project
+            <span id={`${fieldId}-projectId-label`}> Project </span>
             <select
               {...register('projectId')}
+              aria-labelledby={`${fieldId}-projectId-label`}
+              aria-describedby={
+                errors.projectId ? `${fieldId}-projectId-error` : undefined
+              }
               aria-invalid={!!errors.projectId}
             >
               <option value="">Select project</option>
@@ -201,13 +252,19 @@ export function TaskForm({
               ))}
             </select>
             {errors.projectId && (
-              <span className="field-error">{errors.projectId.message}</span>
+              <span className="field-error" id={`${fieldId}-projectId-error`}>
+                {errors.projectId.message}
+              </span>
             )}
           </label>
           <label>
-            Assignee
+            <span id={`${fieldId}-assigneeId-label`}> Assignee </span>
             <select
               {...register('assigneeId')}
+              aria-labelledby={`${fieldId}-assigneeId-label`}
+              aria-describedby={
+                errors.assigneeId ? `${fieldId}-assigneeId-error` : undefined
+              }
               aria-invalid={!!errors.assigneeId}
             >
               <option value="">Select assignee</option>
@@ -218,7 +275,9 @@ export function TaskForm({
               ))}
             </select>
             {errors.assigneeId && (
-              <span className="field-error">{errors.assigneeId.message}</span>
+              <span className="field-error" id={`${fieldId}-assigneeId-error`}>
+                {errors.assigneeId.message}
+              </span>
             )}
           </label>
           <label>
@@ -239,19 +298,28 @@ export function TaskForm({
           </label>
         </div>
         <label>
-          Due date
+          <span id={`${fieldId}-dueDate-label`}> Due date </span>
           <input
             {...register('dueDate')}
+            aria-labelledby={`${fieldId}-dueDate-label`}
+            aria-describedby={[
+              `${fieldId}-dueDate-hint`,
+              errors.dueDate ? `${fieldId}-dueDate-error` : undefined,
+            ]
+              .filter(Boolean)
+              .join(' ')}
             type="date"
             min="1900-01-01"
             max="9999-12-31"
             aria-invalid={!!errors.dueDate}
           />
-          <span className="field-hint">
+          <span className="field-hint" id={`${fieldId}-dueDate-hint`}>
             Due through the end of this day in Bangladesh time.
           </span>
           {errors.dueDate && (
-            <span className="field-error">{errors.dueDate.message}</span>
+            <span className="field-error" id={`${fieldId}-dueDate-error`}>
+              {errors.dueDate.message}
+            </span>
           )}
         </label>
         <Alert error={projects.error ?? users.error ?? mutation.error} />
