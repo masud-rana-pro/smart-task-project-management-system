@@ -38,8 +38,11 @@ export default function DashboardPage() {
       </>
     );
   const data = dashboard.data;
+  const completion = data.totalTasks
+    ? Math.round((data.completedTasks / data.totalTasks) * 100)
+    : 0;
   return (
-    <>
+    <div className="overview-page">
       <PageHeading
         eyebrow="The big picture"
         title={`Hello, ${user?.name.split(' ')[0] ?? 'there'}.`}
@@ -52,18 +55,24 @@ export default function DashboardPage() {
       />
       <section className="welcome-banner">
         <div>
-          <span className="banner-kicker">TEAMWORK, WITH DIRECTION</span>
-          <h2>Small steps. Shared progress.</h2>
+          <span className="banner-kicker">WORKSPACE SNAPSHOT</span>
+          <h2>Keep the team moving forward.</h2>
           <p>
             {data.pendingTasks
               ? `Your team has ${data.pendingTasks} pending ${data.pendingTasks === 1 ? 'task' : 'tasks'}. Let’s keep things moving.`
-              : 'A fresh start for your next great project.'}
+              : data.totalTasks
+                ? 'All tasks are complete. Your team is up to date.'
+                : user?.role === 'ADMIN'
+                  ? 'Create your first project and give the next step an owner.'
+                  : 'Your team’s projects and tasks will appear here.'}
           </p>
         </div>
-        <div className="banner-art" aria-hidden="true">
-          <span className="art-circle">✓</span>
-          <span className="art-stroke" />
-          <span className="art-square" />
+        <div className="workspace-completion">
+          <span>Overall completion</span>
+          <strong>{completion}%</strong>
+          <span>
+            {data.completedTasks} of {data.totalTasks} tasks complete
+          </span>
         </div>
       </section>
       <section className="stats-grid" aria-label="Workspace totals">
@@ -104,7 +113,11 @@ export default function DashboardPage() {
             detail: 'Needs a little attention',
           },
         ].map((stat) => (
-          <article className="stat-card" key={stat.label}>
+          <article
+            className="stat-card"
+            key={stat.label}
+            aria-label={stat.label}
+          >
             <span className={`stat-icon ${stat.color}`}>
               <Icon name={stat.icon} />
             </span>
@@ -127,7 +140,9 @@ export default function DashboardPage() {
           </div>
           {!data.projects.length ? (
             <Empty title="Your next project starts here">
-              Add a project to see your team’s progress.
+              {user?.role === 'ADMIN'
+                ? 'Add a project to see your team’s progress.'
+                : 'Project progress will appear when your team adds work.'}
             </Empty>
           ) : (
             <>
@@ -175,7 +190,16 @@ export default function DashboardPage() {
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-              <ul className="progress-list">
+              {data.projects.length > 6 && (
+                <p className="chart-caption">
+                  Chart shows the first six projects. All projects are listed
+                  below.
+                </p>
+              )}
+              <ul
+                className="progress-list"
+                aria-label="Project completion details"
+              >
                 {data.projects.map((project) => (
                   <li key={project.id}>
                     <div>
@@ -183,11 +207,21 @@ export default function DashboardPage() {
                         {project.name}
                       </Link>
                       <span>
-                        {project.completedTasks}/{project.totalTasks} tasks
+                        {project.totalTasks
+                          ? `${project.completedTasks} of ${project.totalTasks} complete`
+                          : 'No tasks yet'}
                       </span>
                     </div>
                     <div className="progress-row">
-                      <div className="progress-track">
+                      <div
+                        className="progress-track"
+                        role="progressbar"
+                        aria-label={`${project.name} completion`}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={project.progress}
+                        aria-valuetext={`${project.completedTasks} of ${project.totalTasks} tasks complete`}
+                      >
                         <span style={{ width: `${project.progress}%` }} />
                       </div>
                       <strong>{project.progress}%</strong>
@@ -201,7 +235,7 @@ export default function DashboardPage() {
         <section className="panel">
           <div className="panel-heading">
             <div>
-              <h2>On the task list</h2>
+              <h2>Task deadlines</h2>
               <p className="muted">The earliest deadlines across the team.</p>
             </div>
             <Link to="/tasks" aria-label="View all tasks">
@@ -209,7 +243,16 @@ export default function DashboardPage() {
             </Link>
           </div>
           <Alert error={tasks.error} />
-          {tasks.isPending ? (
+          {tasks.error ? (
+            <div className="deadline-retry">
+              <button
+                className="secondary"
+                onClick={() => void tasks.refetch()}
+              >
+                Retry deadlines
+              </button>
+            </div>
+          ) : tasks.isPending ? (
             <Loading />
           ) : !tasks.data?.tasks.length ? (
             <Empty title="A little breathing room">
@@ -244,6 +287,6 @@ export default function DashboardPage() {
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 }

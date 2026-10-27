@@ -24,7 +24,14 @@ function AuthenticatedWorkspace() {
   const [logoutError, setLogoutError] = useState<unknown>(null);
   const [loggingOut, setLoggingOut] = useState(false);
   const page =
-    location.pathname === '/' ? 'Overview' : location.pathname.split('/')[1];
+    (
+      {
+        projects: 'Projects',
+        tasks: 'Tasks',
+        notifications: 'Notifications',
+        members: 'Member access',
+      } as Record<string, string>
+    )[location.pathname.split('/')[1] ?? ''] ?? 'Overview';
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -123,7 +130,12 @@ function AuthenticatedWorkspace() {
                 <span className="notification-dot" />
               )}
             </NavLink>
-            <span className="avatar small">{user?.name.slice(0, 1)}</span>
+            <span
+              className="avatar small"
+              aria-label={`Signed in as ${user?.name}`}
+            >
+              {user?.name.slice(0, 1)}
+            </span>
           </div>
         </header>
         <main id="main" tabIndex={-1} className="page-content">

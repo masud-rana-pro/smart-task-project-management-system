@@ -1,3 +1,4 @@
+/* Shared workspace navigation */
 .brand {
   display: flex;
   align-items: center;
@@ -1723,5 +1724,246 @@ dialog::backdrop {
   }
   .tasks-panel .pagination button {
     min-height: 40px;
+  }
+}
+
+/* Overview and shared workspace refinement. */
+.sidebar nav a {
+  min-height: 46px;
+  border: 1px solid transparent;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+.sidebar nav a.active {
+  border-color: #e1d9f4;
+  font-weight: 650;
+}
+.topbar strong {
+  font-weight: 650;
+  text-transform: none;
+}
+.topbar .notification-link {
+  min-width: 40px;
+  min-height: 40px;
+}
+.overview-page .welcome-banner {
+  align-items: center;
+  gap: 24px;
+  padding: 26px 28px;
+  background: linear-gradient(110deg, #f0ebfc, #f7f4ff);
+}
+.overview-page .welcome-banner > div:first-child {
+  min-width: 0;
+}
+.overview-page .banner-kicker {
+  font-size: 0.65rem;
+}
+.overview-page .welcome-banner h2 {
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  line-height: 1.3;
+}
+.overview-page .welcome-banner p {
+  font-size: 0.85rem;
+  max-width: 460px;
+}
+.workspace-completion {
+  flex-shrink: 0;
+  display: grid;
+  gap: 3px;
+  padding: 15px 22px;
+  border: 1px solid #dfd6f2;
+  border-radius: 12px;
+  background: #ffffffbd;
+  min-width: 180px;
+  color: #584879;
+  font-size: 0.75rem;
+}
+.workspace-completion strong {
+  font-size: 2rem;
+  line-height: 1.2;
+  color: #49346f;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.overview-page .stat-card {
+  border-radius: 12px;
+  padding: 19px 17px;
+  box-shadow: 0 3px 15px #29203d03;
+}
+.overview-page .stat-label {
+  color: #54596f;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.overview-page .stat-card > strong {
+  font-size: 2.05rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  margin-top: 6px;
+}
+.overview-page .stat-card small {
+  font-size: 0.69rem;
+}
+.overview-page .dashboard-grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 22px;
+}
+.overview-page .panel-heading {
+  align-items: flex-start;
+}
+.overview-page .panel-heading h2 {
+  font-size: 1.05rem;
+}
+.overview-page .panel-heading p {
+  font-size: 0.8rem;
+}
+.overview-page .panel-heading > a {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+}
+.overview-page .progress-list li {
+  padding: 16px 0;
+}
+.overview-page .progress-list li > div:first-child {
+  align-items: flex-start;
+}
+.overview-page .progress-list li a {
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+}
+.overview-page .progress-list li > div:first-child > span {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+}
+.overview-page .progress-track {
+  height: 7px;
+}
+.overview-page .progress-row strong {
+  font-size: 0.75rem;
+  color: #574875;
+  font-variant-numeric: tabular-nums;
+}
+.chart-caption {
+  color: #64687c;
+  font-size: 0.72rem;
+  margin: 8px 24px 14px;
+}
+.overview-page .activity-list a {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.overview-page .activity-list p {
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.overview-page .activity-list .due {
+  font-size: 0.73rem;
+}
+.overview-page .activity-list .badge {
+  flex-shrink: 0;
+}
+.deadline-retry {
+  padding: 0 24px 24px;
+}
+@media (max-width: 1200px) {
+  .overview-page .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 850px) {
+  .overview-page .welcome-banner {
+    flex-wrap: wrap;
+  }
+  .workspace-completion {
+    width: 100%;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+  .workspace-completion strong {
+    grid-column: 2;
+    grid-row: 1 / 3;
+  }
+}
+@media (max-width: 620px) {
+  .sidebar {
+    padding: 15px 12px 0;
+  }
+  .sidebar .brand {
+    margin-bottom: 13px;
+  }
+  .sidebar nav {
+    align-items: stretch;
+    gap: 3px;
+    padding-bottom: 10px;
+  }
+  .sidebar nav a {
+    min-height: 64px;
+    padding: 9px 3px 7px;
+    gap: 4px;
+    font-size: 0.65rem;
+    line-height: 1.25;
+    text-align: center;
+    justify-content: flex-start;
+  }
+  .sidebar nav a > span:not(.nav-count) {
+    overflow-wrap: anywhere;
+  }
+  .sidebar .nav-count {
+    top: 2px;
+    right: 3px;
+  }
+  .sidebar .logout-button {
+    min-height: 36px;
+    padding: 0 7px;
+  }
+  .topbar {
+    padding: 0 17px;
+  }
+  .topbar-actions {
+    gap: 8px;
+  }
+  .overview-page .welcome-banner {
+    padding: 21px;
+    gap: 18px;
+  }
+  .overview-page .welcome-banner p {
+    max-width: none;
+    font-size: 0.8rem;
+  }
+  .overview-page .stat-card {
+    padding: 17px 15px;
+  }
+  .overview-page .stat-card > strong {
+    font-size: 1.9rem;
+  }
+  .overview-page .stat-card:last-child > strong {
+    margin: 0;
+  }
+  .overview-page .progress-list {
+    padding: 0 18px 7px;
+  }
+  .overview-page .progress-list li > div:first-child {
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+  .overview-page .activity-list li {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .overview-page .activity-list li > div {
+    flex-basis: calc(100% - 20px);
+  }
+  .overview-page .activity-list .badge {
+    margin-left: 16px;
+    font-size: 0.68rem;
+    padding: 5px 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar nav a {
+    transition: none;
   }
 }

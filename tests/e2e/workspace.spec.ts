@@ -231,15 +231,87 @@ async function login(page: Page, email: string, password: string) {
   await expectReadableContrast(page);
 }
 
+async function verifyOverview(page: Page, projectId: string) {
+  const response = await page.request.get('/api/dashboard');
+  expect(response.status()).toBe(200);
+  const data = await response.json();
+  for (const [label, value] of [
+    ['Total projects', data.totalProjects],
+    ['Total tasks', data.totalTasks],
+    ['Completed', data.completedTasks],
+    ['Pending', data.pendingTasks],
+    ['Overdue', data.overdueTasks],
+  ] as const) {
+    await expect(
+      page.getByRole('article', { name: label, exact: true }).locator('strong'),
+    ).toHaveText(String(value));
+  }
+  const completion = data.totalTasks
+    ? Math.round((data.completedTasks / data.totalTasks) * 100)
+    : 0;
+  await expect(page.locator('.workspace-completion strong')).toHaveText(
+    `${completion}%`,
+  );
+  const project = data.projects.find(
+    (item: { id: string }) => item.id === projectId,
+  );
+  await expect(
+    page.getByRole('progressbar', {
+      name: `${project.name} completion`,
+      exact: true,
+    }),
+  ).toHaveAttribute('aria-valuenow', String(project.progress));
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+}
+
 test('Admin manages a project and task, filters results, and cannot delete a nonempty project', async ({
   page,
   workspace,
 }, info) => {
   await login(page, workspace.adminEmail, workspace.password);
+  await verifyOverview(page, workspace.projectId);
   await page.screenshot({
     path: info.outputPath('overview.png'),
     fullPage: true,
   });
+  let failDeadlineRequest = true;
+  await page.route('**/api/tasks?*', async (route) => {
+    if (failDeadlineRequest) {
+      failDeadlineRequest = false;
+      await route.fulfill({
+        status: 503,
+        json: {
+          error: {
+            code: 'TEMPORARY_ERROR',
+            message: 'Deadline list is temporarily unavailable.',
+          },
+        },
+      });
+    } else await route.continue();
+  });
+  await page.reload();
+  await expect(page.getByRole('alert')).toContainText(
+    'Deadline list is temporarily unavailable.',
+  );
+  await expect(
+    page.getByRole('heading', { name: 'A little breathing room' }),
+  ).toHaveCount(0);
+  await page.getByRole('button', { name: 'Retry deadlines' }).click();
+  await expect(
+    page.getByRole('link', { name: workspace.ownTask, exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await page.unroute('**/api/tasks?*');
+  await page
+    .getByRole('list', { name: 'Project completion details' })
+    .getByRole('link', { name: workspace.project, exact: true })
+    .click();
+  await expect(page).toHaveURL(new RegExp(`projectId=${workspace.projectId}`));
+  await expect(page.locator('.topbar strong')).toHaveText('Tasks');
   await page
     .getByRole('navigation', { name: 'Main navigation' })
     .getByRole('link', { name: 'Projects', exact: true })
@@ -355,6 +427,7 @@ test('Member changes only assigned status and reads their overdue notification',
   workspace,
 }, info) => {
   await login(page, workspace.memberEmail, workspace.password);
+  await verifyOverview(page, workspace.projectId);
   await page
     .getByRole('navigation')
     .getByRole('link', { name: 'Tasks', exact: true })
