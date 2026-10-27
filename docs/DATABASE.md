@@ -16,6 +16,8 @@ Using a local text editor, configure backend/.env from backend/.env.example with
 
 Once configuration is complete, run the approved migration/check commands or let the agent execute them without printing the URLs. backend scripts load backend/.env. Database tests must load that file as well; otherwise a configured TEST_DATABASE_URL in the file would not reach the test process.
 
+Apply the committed migrations separately to both development and test databases before running tests. `npm run db:deploy` uses DIRECT_URL, not TEST_DATABASE_URL. The README's Checks section shows a temporary PowerShell DIRECT_URL override for smart_task_test and removes it afterward. Use the same test URL as TEST_DATABASE_URL; do not run the tests against the development or hosted demo database. Test fixtures are created by the suites, so seeding the test database is unnecessary.
+
 ## Local provisioning decisions
 
 After explicit approval of the isolated targets, create a dedicated non-superuser project login and databases `smart_task_dev` and `smart_task_test`, owned by that login. Use PostgreSQL 17 initially. Have the candidate enter credentials locally through an administrative database tool. Never reuse unrelated application databases, commit credentials or modify global server authentication settings.

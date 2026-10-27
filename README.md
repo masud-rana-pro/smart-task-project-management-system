@@ -59,6 +59,19 @@ The non-destructive seed creates two projects, four tasks, and members `member.o
 
 ## Checks
 
+Before the first test run, apply the committed migrations to the isolated test database too. The earlier `npm run db:deploy` targets the development database; setting TEST_DATABASE_URL alone does not migrate the test database. In a separate PowerShell terminal, replace the example below with the same isolated test connection configured as TEST_DATABASE_URL in backend/.env. URL-encode the real password locally:
+
+```powershell
+$env:DIRECT_URL = 'postgresql://smart_task:YOUR_URL_ENCODED_DB_PASSWORD@127.0.0.1:5432/smart_task_test'
+try {
+  npm run db:deploy
+} finally {
+  Remove-Item Env:DIRECT_URL
+}
+```
+
+Use a database whose name ends in `_test`. Removing this temporary override restores normal loading of the development DIRECT_URL from backend/.env on subsequent commands. The tests create and clean their own fictional fixtures; no demo seed is needed for the test database.
+
 ```sh
 npm run check
 npm run db:validate
