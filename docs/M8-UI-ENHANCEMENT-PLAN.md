@@ -23,3 +23,7 @@ Verification: focused real browser assertions for descending sorting, counts/pag
 5. Final regression, current screenshots/report and submission evidence refresh.
 
 Each screen group will have a concrete approval request when reached; approval of M8A does not silently approve all later implementation. External publication remains separately gated by AGENTS.md. Do not add email services, public password recovery, new role capabilities or unrelated product features under visual refinement.
+
+## Prepared next scope - M8B Overview and navigation
+
+Pending candidate approval: refine the shared sidebar/header and mobile navigation spacing, give page names readable labels, improve dashboard total-card hierarchy and project-progress readability, and make earliest-deadline rows wrap cleanly. Review loading, retry and empty states; keep existing dashboard definitions, API permissions and chart data intact. Use installed dependencies only. Verify both roles, dashboard values against the existing API fixtures, task/project navigation and desktop/mobile layout; save fictional-data screenshots. Local implementation/testing is a separate approval from commit/push and live publication.
