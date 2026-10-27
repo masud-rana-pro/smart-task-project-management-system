@@ -1,5 +1,13 @@
 # Candidate manual acceptance record
 
+## Final candidate confirmation - 27 October 2026
+
+The candidate reports completing manual testing, including mobile use and the remaining application checks, and requested final submission preparation on that basis. This supersedes the earlier mobile deferral below. The statement records the candidate's confirmation; detailed device/browser/version logs for those additional checks were not supplied. Automated desktop/mobile evidence is recorded independently in M7-VERIFICATION.md and M8A-VERIFICATION.md.
+
+The candidate also correctly answered the later checkpoint that Tasks filters and sorting survive refresh because they are restored from URL query parameters. Earlier notes below preserve the guided checks and their chronology.
+
+## Guided check history
+
 27 October 2026, candidate-reported checks performed through the live application. These confirmations are distinct from the agent's automated/deployed verification.
 
 The candidate answered OK to the guided steps for login page/Admin login, project creation/reload/edit/required-field validation, task creation/reload/edit/validation, nonempty project deletion protection, search including no results, status/priority/project/assignee/combined filters, overdue display/notice/read persistence/deduplication, completed-task overdue removal, project progress and dashboard count transitions. The candidate also confirmed opening registration and registering a separate Member.

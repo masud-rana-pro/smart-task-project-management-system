@@ -1,5 +1,17 @@
 # Final verification record
 
+## Submission revision - 27 October 2026
+
+Application source cbcfd6106dbe7d2493b469350b6074083444fc6d includes Admin-assisted Member password reset and the M8A Tasks refinements. `npm run check` passed formatting, lint, strict TypeScript, 8 frontend tests, 33 backend tests, 2 routing tests and both production builds. All ten PostgreSQL-backed desktop/mobile browser workflows passed. [Application CI 40434558505](https://github.com/masud-rana-pro/smart-task-project-management-system/actions/runs/40434558505) succeeded; the following documentation revision 2b1aafa also passed [CI 40434860911](https://github.com/masud-rana-pro/smart-task-project-management-system/actions/runs/40434860911).
+
+Production deployment dpl_DnJRDqHyaJ6BQwKrELbSoixxsZoD was verified READY for cbcfd61. Live checks passed login, API-consistent descending title sorting, combined filters, reload persistence, filter removal, mobile width/result summary and logout, without editing existing accounts/tasks. Earlier full live persistence/permissions/reset evidence remains in M5-VERIFICATION.md and M7-VERIFICATION.md. M8A-VERIFICATION.md contains the latest screenshots and checks.
+
+The candidate now reports completing desktop and mobile manual testing. MANUAL-ACCEPTANCE.md distinguishes that confirmation from recorded automated results. Additional cosmetic work on Overview/navigation was approved but not started; the candidate subsequently prioritized today's submission, so the tested live application remains the delivery baseline.
+
+Final documents are refreshed for the email's requested technology/tool list, AI usage, personal contribution/process, challenges and run/test instructions. The report's five required AI-disclosure topics are retained. The earlier evidence below remains dated historical context.
+
+Both final PDFs were regenerated from editable Markdown with scripts/render-submission.py. Each reopened as one page; the AI report meets the assignment's one-page constraint. Poppler-rendered previews were visually reviewed for legibility and clipping. The attachment bundle uses an explicit document allowlist and excludes local environments, credentials, the confidential assignment and browser traces. This final revision changes documents and document generation only; application test and deployment evidence above remains applicable.
+
 27 October enhancement: Admin-assisted Member password reset is now implemented and live. Its 43 code tests, ten desktop/mobile workflows, passing CI and scoped hosted reset/login evidence are recorded in M7-VERIFICATION.md. The original 26 October record below remains historical evidence of the initial submission milestone.
 
 Date: 26 October 2026, Asia/Dhaka. Scope: post-SoC application source f7d0cb3 and M6 deliverables.

@@ -4,7 +4,7 @@ A React/TypeScript and Node/Express task-management assessment prototype with Po
 
 The React interface and API implement registration/login/logout, PostgreSQL sessions, Admin/Team Member permissions, project/task CRUD, filtering/search/pagination, dashboard/progress charts and in-app overdue notifications. All six optional feature categories are implemented. See the [acceptance audit](docs/ACCEPTANCE-AUDIT.md) and verification records for tested coverage and limitations.
 
-**Live demo:** https://smart-task-project-management-syste-delta.vercel.app. Public registration creates a Team Member; evaluator Admin credentials are shared privately. Hosted test fixtures are removed after verification, so the workspace may initially be empty. [Submission index and deliverables](docs/SUBMISSION.md).
+**Live demo:** https://smart-task-project-management-syste-delta.vercel.app. Public registration creates a Team Member; evaluator Admin credentials are shared privately. Fictional demonstration data may be present. [Submission index and deliverables](docs/SUBMISSION.md).
 
 ## Prerequisites
 
@@ -67,7 +67,7 @@ npm run db:generate
 
 `check` runs formatting, lint, type checks, unit/API tests, and frontend/backend builds. Database integration tests skip explicitly when `TEST_DATABASE_URL` is absent. Set it to a migrated isolated `_test` database to run them. Skipped tests are not passing database evidence.
 
-Browser workflows need a Playwright Chromium binary or installed Chrome. Install Chromium with `npx playwright install chromium` when that download is approved, then run `npm run test:e2e`. Stop any API using port 3001 first: the suite intentionally starts its own compiled API against TEST_DATABASE_URL and creates/removes only its fictional fixtures. It never reuses a development API. Eight desktop/mobile workflows cover roles, CRUD, filters, pagination, notifications, registration, logout and keyboard skip navigation. CI provisions isolated PostgreSQL, applies migrations, and runs the checks and browser workflows. A workflow file is not proof of a successful GitHub run.
+Browser workflows need a Playwright Chromium binary or installed Chrome. Install Chromium with `npx playwright install chromium` when that download is approved, then run `npm run test:e2e`. Stop any API using port 3001 first: the suite intentionally starts its own compiled API against TEST_DATABASE_URL and creates/removes only its fictional fixtures. It never reuses a development API. Ten desktop/mobile workflows cover roles, CRUD, filters, sorting, pagination, notifications, registration, password reset/session revocation, logout and keyboard skip navigation. CI provisions isolated PostgreSQL, applies migrations, and runs the checks and browser workflows. The final application passed 43 code tests and all ten browser workflows; see [final verification](docs/FINAL-VERIFICATION.md) for the corresponding CI and deployment evidence.
 
 If the browser download is unavailable, Playwright can use an already-installed Chrome without changing the normal browser profile. In PowerShell: `$env:PLAYWRIGHT_CHANNEL='chrome'`, then `npm run test:e2e`; afterward `Remove-Item Env:PLAYWRIGHT_CHANNEL`. The suite checks desktop/mobile layouts and saves screenshots under ignored `test-results/`. CI uses Playwright's downloaded Chromium by default.
 
@@ -98,6 +98,6 @@ AGENTS.md                 Approved project instructions and approval gates
 
 ## Delivery and attribution
 
-The target is 26 October 2026, Asia/Dhaka. Source: [GitHub repository](https://github.com/masud-rana-pro/smart-task-project-management-system). The working provider domain is the submission URL; optional masud.root.sx is pending parent-domain ownership verification and has not replaced it.
+Prepared for submission on 27 October 2026, Asia/Dhaka, following the earlier 26 October completion target. Source: [GitHub repository](https://github.com/masud-rana-pro/smart-task-project-management-system). Use the working HTTPS provider URL above for the demonstration.
 
 AI assistance: OpenAI Codex assisted requirement analysis, planning, scaffolding integration, implementation, tests and documentation. Official generators created standard starter files. Most code/tests were AI-assisted; candidate decisions/setup are attributed separately. See the [AI work log](docs/AI-WORK-LOG.md), [one-page report](output/pdf/AI-Usage-Report.pdf), [editable report](docs/AI-USAGE-REPORT.md) and [project description](docs/PROJECT-DESCRIPTION.md). The [walkthrough](docs/WALKTHROUGH.md) prepares the candidate's explanation; reading it does not establish completed rehearsal or understanding.

@@ -1,5 +1,7 @@
 # Acceptance and separation-of-concerns audit
 
+Submission update, 27 October 2026: the final application includes M7 Admin reset and M8A Tasks improvements, with 43 code tests and ten desktop/mobile workflows passing. Current source/CI/live evidence is in FINAL-VERIFICATION.md and M8A-VERIFICATION.md. The candidate reports manual mobile testing complete. The dated 26 October architecture review and its test counts below describe that earlier revision.
+
 Reviewed 26 October 2026 against the supplied assignment and approved REQUIREMENTS.md. This is evidence of tested behavior, not a promise of an evaluation score or a full security/accessibility certification.
 
 ## Structure

@@ -1,6 +1,6 @@
 # AI Usage Report
 
-Smart Task & Project Management System | 26 October 2026
+Smart Task & Project Management System | 27 October 2026
 
 ## Tools and scope
 
@@ -24,6 +24,6 @@ The first AI-assisted deployment configuration used npm ci under production NODE
 
 ## Verification and candidate contribution
 
-Verification included formatting, lint, TypeScript checks, 39 automated tests, both application builds and eight desktop/mobile browser workflows. Integration tests used a real isolated PostgreSQL database. Container checks covered migrations and repeatable sample data; live checks followed the browser request through the API to hosted PostgreSQL.
+Verification included formatting, lint, TypeScript checks, 43 automated tests, both application builds and ten desktop/mobile browser workflows. Integration tests used a real isolated PostgreSQL database. Container checks covered migrations and repeatable sample data; live checks covered authentication, permissions, persistence and the final Tasks interface. GitHub CI passed for the submitted application revision.
 
-My contributions included choosing PostgreSQL, deciding the permissions and deadline behavior, reviewing milestone proposals, creating the local databases and hosting accounts, entering credentials privately, and performing the initial deployment setup. I also requested the final architecture and requirements review. Codex generated or edited the implementation and tests and ran the recorded checks. Detailed evidence is available in docs/AI-WORK-LOG.md and docs/ACCEPTANCE-AUDIT.md.
+My contributions included choosing PostgreSQL, deciding permissions and deadline behavior, reviewing milestones, setting up local databases and hosting accounts, entering credentials privately and performing the initial deployment steps. I manually tested the application, including mobile use, and requested the final architecture and requirements review. Codex generated or edited the implementation and tests and ran the recorded automated checks. Detailed evidence is available in docs/AI-WORK-LOG.md and docs/FINAL-VERIFICATION.md.

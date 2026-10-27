@@ -26,4 +26,6 @@ Each screen group will have a concrete approval request when reached; approval o
 
 ## Prepared next scope - M8B Overview and navigation
 
+The candidate approved local M8B work, conditional on the previous documentation CI passing; CI 40434860911 succeeded. Before implementation began, the candidate prioritized completing the final submission today. M8B is therefore deferred; no Overview/navigation source changes were made.
+
 Pending candidate approval: refine the shared sidebar/header and mobile navigation spacing, give page names readable labels, improve dashboard total-card hierarchy and project-progress readability, and make earliest-deadline rows wrap cleanly. Review loading, retry and empty states; keep existing dashboard definitions, API permissions and chart data intact. Use installed dependencies only. Verify both roles, dashboard values against the existing API fixtures, task/project navigation and desktop/mobile layout; save fictional-data screenshots. Local implementation/testing is a separate approval from commit/push and live publication.

@@ -1,5 +1,7 @@
 # Assignment compliance review
 
+Submission update: final source cbcfd61 and documentation 2b1aafa have passing CI. M8A's sorting/count/mobile refinements are deployed and live-verified. The candidate subsequently confirmed manual mobile testing complete. The AI report and project description are refreshed for 27 October submission; historical observations below retain their review context. See FINAL-VERIFICATION.md and SUBMISSION.md for the current delivery record.
+
 Reviewed 27 October 2026 against both pages of the original assignment supplied locally by the candidate. The confidential PDF/email are not copied into this repository. This review separates assignment requirements, optional enhancements, historical test evidence and remaining human checks.
 
 ## Overall finding
