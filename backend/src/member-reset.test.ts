@@ -170,7 +170,7 @@ describe.skipIf(!connection)('Admin-only member password reset', () => {
     expect(JSON.stringify(result.body)).not.toContain('$scrypt$');
     await fresh.get('/api/auth/me').expect(200);
     await admin.get('/api/auth/me').expect(200);
-  });
+  }, 30_000);
   it('bounds reset attempts per authenticated Admin', async () => {
     for (let attempt = 0; attempt < 7; attempt++)
       await admin

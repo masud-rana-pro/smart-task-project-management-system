@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
@@ -51,7 +51,8 @@ export default function TasksPage() {
     queryKey: ['tasks', query.toString()],
     queryFn: () => api<TaskList>('/tasks?' + query),
   });
-  useEffect(() => {
+  // Synchronize before another input event or debounce callback can merge filters.
+  useLayoutEffect(() => {
     latestParams.current = params;
   }, [params]);
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function TasksPage() {
   }, [searchParam]);
   useEffect(() => () => clearTimeout(searchTimer.current), []);
   function filter(key: string, value: string) {
+    if (key === 'search') clearTimeout(searchTimer.current);
     const next = new URLSearchParams(latestParams.current);
     if ((next.get(key) ?? '') === value) return;
     if (value) next.set(key, value);
@@ -77,6 +79,50 @@ export default function TasksPage() {
       });
     },
   });
+  function resetFilters() {
+    clearTimeout(searchTimer.current);
+    if (searchInput.current) searchInput.current.value = '';
+    latestParams.current = new URLSearchParams();
+    setParams({});
+  }
+  const activeFilters = [
+    {
+      key: 'projectId',
+      label: 'Project',
+      value:
+        projects.data?.projects.find(
+          (item) => item.id === params.get('projectId'),
+        )?.name ?? 'Selected project',
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      value: statusLabel[params.get('status') as Status] ?? 'Selected status',
+    },
+    {
+      key: 'priority',
+      label: 'Priority',
+      value:
+        priorityLabel[params.get('priority') as keyof typeof priorityLabel] ??
+        'Selected priority',
+    },
+    {
+      key: 'assigneeId',
+      label: 'Assignee',
+      value:
+        users.data?.users.find((item) => item.id === params.get('assigneeId'))
+          ?.name ?? 'Selected assignee',
+    },
+    { key: 'search', label: 'Search', value: searchParam },
+  ].filter((item) => params.get(item.key));
+  const pagination = tasks.data?.pagination;
+  const rangeStart =
+    pagination && tasks.data?.tasks.length
+      ? (pagination.page - 1) * pagination.pageSize + 1
+      : 0;
+  const rangeEnd = pagination
+    ? Math.min(pagination.page * pagination.pageSize, pagination.total)
+    : 0;
   return (
     <>
       <PageHeading
@@ -93,6 +139,13 @@ export default function TasksPage() {
         }
       />
       <section className="panel tasks-panel">
+        <div className="task-list-heading">
+          <div>
+            <h2>Your task list</h2>
+            <p>Find the right work. Keep the next step moving.</p>
+          </div>
+          <span className="task-scope">Shared workspace</span>
+        </div>
         <div className="task-toolbar">
           <div className="search-field">
             <Icon name="search" />
@@ -114,7 +167,7 @@ export default function TasksPage() {
           </div>
           <span className="result-count" role="status">
             {tasks.data
-              ? `${tasks.data.pagination.total} tasks`
+              ? `${tasks.data.pagination.total} ${tasks.data.pagination.total === 1 ? 'task' : 'tasks'}`
               : 'Finding tasks…'}
           </span>
         </div>
@@ -182,13 +235,12 @@ export default function TasksPage() {
               value={`${params.get('sortBy') ?? 'createdAt'}:${params.get('sortOrder') ?? 'desc'}`}
               onChange={(event) => {
                 const [key, direction] = event.target.value.split(':');
-                setParams((previous) => {
-                  const next = new URLSearchParams(previous);
-                  next.set('sortBy', key!);
-                  next.set('sortOrder', direction!);
-                  next.delete('page');
-                  return next;
-                });
+                const next = new URLSearchParams(latestParams.current);
+                next.set('sortBy', key!);
+                next.set('sortOrder', direction!);
+                next.delete('page');
+                latestParams.current = next;
+                setParams(next);
               }}
             >
               <option value="createdAt:desc">Newest first</option>
@@ -196,20 +248,32 @@ export default function TasksPage() {
               <option value="dueDate:asc">Due date: earliest</option>
               <option value="dueDate:desc">Due date: latest</option>
               <option value="title:asc">Title: A–Z</option>
+              <option value="title:desc">Title: Z–A</option>
               <option value="priority:desc">Priority: high first</option>
             </select>
           </label>
-          <button
-            className="text-button reset-button"
-            onClick={() => {
-              clearTimeout(searchTimer.current);
-              if (searchInput.current) searchInput.current.value = '';
-              setParams({});
-            }}
-          >
+          <button className="text-button reset-button" onClick={resetFilters}>
             Reset filters
           </button>
         </div>
+        {!!activeFilters.length && (
+          <div className="active-task-filters" aria-label="Active task filters">
+            <span>Filtered by</span>
+            {activeFilters.map((item) => (
+              <button
+                key={item.key}
+                className="task-filter-chip"
+                aria-label={`Remove ${item.label} filter`}
+                onClick={() => filter(item.key, '')}
+              >
+                <span>
+                  {item.label}: <strong>{item.value}</strong>
+                </span>
+                <span aria-hidden="true">×</span>
+              </button>
+            ))}
+          </div>
+        )}
         <Alert
           error={tasks.error ?? projects.error ?? users.error ?? status.error}
         />
@@ -224,7 +288,13 @@ export default function TasksPage() {
         {tasks.isPending ? (
           <Loading />
         ) : !tasks.data ? null : !tasks.data.tasks.length ? (
-          <Empty title="No tasks to show">
+          <Empty
+            title={
+              tasks.data.pagination.page > 1 && tasks.data.pagination.total > 0
+                ? 'That page is empty'
+                : 'No tasks to show'
+            }
+          >
             {params.size
               ? 'Try a different search or reset your filters.'
               : admin
@@ -234,12 +304,12 @@ export default function TasksPage() {
         ) : (
           <>
             <div className="table-scroll">
-              <table className="task-table">
+              <table className="task-table" role="table">
                 <caption className="sr-only">
                   Tasks in the shared workspace
                 </caption>
-                <thead>
-                  <tr>
+                <thead role="rowgroup">
+                  <tr role="row">
                     <th scope="col">Task</th>
                     <th scope="col">Project</th>
                     <th scope="col">Assignee</th>
@@ -249,10 +319,14 @@ export default function TasksPage() {
                     <th scope="col">{admin ? 'Actions' : 'Details'}</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody role="rowgroup">
                   {tasks.data.tasks.map((task) => (
-                    <tr key={task.id}>
-                      <td className="task-title-cell">
+                    <tr key={task.id} role="row">
+                      <td
+                        className="task-title-cell"
+                        role="cell"
+                        data-label="Task"
+                      >
                         <button
                           className="task-title"
                           onClick={() =>
@@ -265,8 +339,10 @@ export default function TasksPage() {
                           {task.description || 'No description'}
                         </span>
                       </td>
-                      <td>{task.project.name}</td>
-                      <td>
+                      <td role="cell" data-label="Project">
+                        {task.project.name}
+                      </td>
+                      <td role="cell" data-label="Assignee">
                         <span className="assignee">
                           <span className="avatar small">
                             {task.assignee.name.slice(0, 1)}
@@ -274,7 +350,7 @@ export default function TasksPage() {
                           {task.assignee.name}
                         </span>
                       </td>
-                      <td>
+                      <td role="cell" data-label="Due date">
                         <span className={isOverdue(task) ? 'overdue' : ''}>
                           {displayDate(task.dueDate)}
                         </span>
@@ -282,7 +358,7 @@ export default function TasksPage() {
                           <small className="overdue block">Overdue</small>
                         )}
                       </td>
-                      <td>
+                      <td role="cell" data-label="Priority">
                         <span
                           className={`priority ${task.priority.toLowerCase()}`}
                         >
@@ -290,7 +366,7 @@ export default function TasksPage() {
                           {priorityLabel[task.priority]}
                         </span>
                       </td>
-                      <td>
+                      <td role="cell" data-label="Status">
                         {admin || task.assigneeId === user?.id ? (
                           <select
                             className={`status-select ${task.status.toLowerCase()}`}
@@ -321,7 +397,10 @@ export default function TasksPage() {
                           </span>
                         )}
                       </td>
-                      <td>
+                      <td
+                        role="cell"
+                        data-label={admin ? 'Actions' : 'Details'}
+                      >
                         {admin ? (
                           <div className="row-actions">
                             <button
@@ -353,10 +432,17 @@ export default function TasksPage() {
               </table>
             </div>
             <div className="pagination">
-              <span>
-                Page {tasks.data.pagination.page} of{' '}
-                {Math.max(1, tasks.data.pagination.totalPages)}
-              </span>
+              <div className="pagination-summary">
+                <span className="task-range">
+                  Showing {rangeStart}–{rangeEnd} of{' '}
+                  {tasks.data.pagination.total}{' '}
+                  {tasks.data.pagination.total === 1 ? 'task' : 'tasks'}
+                </span>
+                <span>
+                  Page {tasks.data.pagination.page} of{' '}
+                  {Math.max(1, tasks.data.pagination.totalPages)}
+                </span>
+              </div>
               <div>
                 <button
                   className="secondary"
@@ -391,11 +477,13 @@ export default function TasksPage() {
             </div>
           </>
         )}
-        {tasks.data?.pagination.total === 0 && params.has('page') && (
-          <button className="secondary" onClick={() => filter('page', '')}>
-            Return to first page
-          </button>
-        )}
+        {tasks.data &&
+          tasks.data.tasks.length === 0 &&
+          tasks.data.pagination.page > 1 && (
+            <button className="secondary" onClick={() => filter('page', '')}>
+              Return to first page
+            </button>
+          )}
       </section>
       {!admin && (
         <p className="page-footnote">

@@ -120,11 +120,75 @@ test('Task search, combined filters, sorting, pagination and empty reset work to
   await expect(
     page.getByRole('button', { name: 'Pagination step 01', exact: true }),
   ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Previous', exact: true }),
+  ).toBeDisabled();
+  await expect(
+    page.getByText('Showing 1–10 of 11 tasks', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Remove Project filter' }),
+  ).toBeVisible();
+  await page
+    .getByRole('combobox', { name: 'Sort by' })
+    .selectOption({ label: 'Title: Z–A' });
+  await expect(page).toHaveURL(/sortOrder=desc/);
+  await expect(
+    page.getByRole('button', { name: /^Pagination step/ }).first(),
+  ).toHaveText('Pagination step 11');
+  await page.reload();
+  await expect(page.getByRole('combobox', { name: 'Sort by' })).toHaveValue(
+    'title:desc',
+  );
+  await expect(
+    page.getByRole('button', { name: /^Pagination step/ }).first(),
+  ).toHaveText('Pagination step 11');
+  await page
+    .getByRole('combobox', { name: 'Sort by' })
+    .selectOption('title:asc');
+  await expect(
+    page.getByRole('button', { name: /^Pagination step/ }).first(),
+  ).toHaveText('Pagination step 01');
   await page.getByRole('button', { name: 'Next', exact: true }).click();
   await expect(
     page.getByRole('button', { name: 'Pagination step 11', exact: true }),
   ).toBeVisible();
   await expect(page.getByText('Page 2 of 2', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('Showing 11–11 of 11 tasks', { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Next', exact: true }),
+  ).toBeDisabled();
+  const response = await page.request.get(
+    '/api/tasks?search=Pagination%20step%2011',
+  );
+  const lastTask = (await response.json()).tasks.find(
+    (task: { projectId: string }) => task.projectId === workspace.projectId,
+  );
+  await page.request.delete(`/api/tasks/${lastTask.id}`, {
+    headers: {
+      Origin: 'http://127.0.0.1:5173',
+      'x-csrf-token': token.csrfToken,
+    },
+  });
+  await page.reload();
+  await expect(
+    page.getByRole('heading', { name: 'That page is empty' }),
+  ).toBeVisible();
+  await page
+    .getByRole('button', { name: 'Return to first page', exact: true })
+    .click();
+  await expect(
+    page.getByText('Showing 1–10 of 10 tasks', { exact: true }),
+  ).toBeVisible();
+  await page.getByRole('button', { name: 'Remove Priority filter' }).click();
+  await expect(
+    page.getByRole('combobox', { name: 'Priority', exact: true }),
+  ).toHaveValue('');
+  await expect(
+    page.getByRole('combobox', { name: 'Project', exact: true }),
+  ).toHaveValue(workspace.projectId);
   await page.getByLabel('Search tasks').fill('nothing-matches-this-search');
   await expect(
     page.getByRole('heading', { name: 'No tasks to show' }),
@@ -136,6 +200,25 @@ test('Task search, combined filters, sorting, pagination and empty reset work to
   await expect(
     page.getByRole('heading', { name: 'No tasks to show' }),
   ).toHaveCount(0);
+  await page.getByLabel('Search tasks').fill('Pagination step 01');
+  await expect(page.getByText('1 task', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('Showing 1–1 of 1 task', { exact: true }),
+  ).toBeVisible();
+  const table = page.getByRole('table', {
+    name: 'Tasks in the shared workspace',
+  });
+  expect(
+    await table.evaluate(
+      (element) => element.scrollWidth <= element.clientWidth,
+    ),
+  ).toBe(true);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await expectReadableContrast(page);
 });
 async function login(page: Page, email: string, password: string) {
   await page.goto('/login');
