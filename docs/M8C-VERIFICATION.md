@@ -24,4 +24,4 @@ Six fictional-data screenshots are saved in output/evidence/m8c/: projects-deskt
 
 ## Release status
 
-Local work only. M8C has not been committed, pushed or deployed. The previously verified M8B release remains live. Submission report architecture, feature descriptions and test counts remain applicable.
+The candidate approved commit/push, production publication and read-only live checks. Source 78d19512bc04e1cdef749594d499ff202a6ee442 was pushed after the staged-secret scan passed. GitHub CI 40501905758 completed successfully. Vercel production deployment dpl_BCttYv1DtoSD56gNxPyBUG3E84jy reached READY for that source. node tmp/verify-live-m8c.mjs exited 0: readiness, Admin login, project counts/progress against the API, widths 1280/393/320, project/task validation, sticky dialog controls and logout all passed. There were zero browser exceptions and no project/task/account edits. Normal login/logout sessions were used. Submission report architecture, feature descriptions and test counts remain applicable.

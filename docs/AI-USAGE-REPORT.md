@@ -8,11 +8,11 @@ I used OpenAI Codex throughout planning and development, including the React int
 
 ## Three actual prompts
 
-These are shortened English paraphrases of my requests:
+The following English prompts are professionally edited summaries of my actual requests, not verbatim chat quotations:
 
-1. Read the assignment, plan an industry-style project, and implement required and optional features with GitHub and free no-card hosting.
-2. Ask unresolved decisions as a multiple-choice interview and obtain milestone/setup confirmations.
-3. Check separation of concerns and all requirements; correct gaps before preparing the final submission documents.
+1. Analyze the assignment and map every required and optional feature to acceptance criteria. Propose a maintainable React, Express and PostgreSQL architecture, a milestone plan, GitHub workflow and free hosting without payment-card requirements.
+2. Clarify unresolved product and architecture decisions through concise multiple-choice questions. Record the agreed choices and obtain approval before implementation milestones, installations and publication.
+3. Audit the implementation against the assignment and separation-of-concerns principles. Correct verified gaps, validate the application with database and browser tests, and prepare accurate setup, evaluation and AI-disclosure documents.
 
 ## Problem solved with AI assistance
 

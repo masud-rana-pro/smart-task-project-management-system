@@ -2,7 +2,9 @@
 
 ## Submission revision - 27 October 2026
 
-Latest UI release: Overview/shared-navigation refinement 499fe48 is deployed and read-only live checks passed, including API-consistent totals, completion/progress, navigation and four viewport widths. M8B-VERIFICATION.md records the local 43-test/ten-workflow results, screenshots, deployment and source CI. The submission reports retain the same architecture, test counts and required feature coverage.
+Latest UI release: Projects/forms polish 78d1951 passed source CI 40501905758 and is READY in production. Read-only live checks passed counts/progress, form validation, responsive layout and sticky dialog controls. See M8C-VERIFICATION.md. Further cosmetic milestones are deferred at the candidate's request while submission documents are prepared.
+
+Previous UI release: Overview/shared-navigation refinement 499fe48 is deployed and read-only live checks passed, including API-consistent totals, completion/progress, navigation and four viewport widths. M8B-VERIFICATION.md records the local 43-test/ten-workflow results, screenshots, deployment and source CI. The submission reports retain the same architecture, test counts and required feature coverage.
 
 Final reread: both original assignment pages and the supplied invitation were compared again with the source, reports and attachment bundle. All seven mandatory groups, six optional categories, five repository/report deliverables and five project-description topics were present. Both PDFs reopen as one page and the ZIP integrity/allowlist check passes. The setup guide was clarified to show migrating the isolated test database separately; a local DIRECT_URL override selected smart_task_test successfully and reported no pending migrations. No application code or report content needed correction. The final submission-document commit 875a901 passed [CI 40466280041](https://github.com/masud-rana-pro/smart-task-project-management-system/actions/runs/40466280041); live readiness, login and OpenAPI returned HTTP 200 during the reread.
 

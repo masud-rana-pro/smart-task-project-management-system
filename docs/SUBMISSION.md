@@ -12,7 +12,8 @@ Prepared 27 October 2026, Asia/Dhaka. Attach the [brief project description](../
 - One-page AI report: ../output/pdf/AI-Usage-Report.pdf; editable source: AI-USAGE-REPORT.md
 - Brief project description: PROJECT-DESCRIPTION.md
 - Verification: FINAL-VERIFICATION.md and M8A-VERIFICATION.md, with historical M1-M7 evidence
-- Latest Overview/navigation polish and live verification: M8B-VERIFICATION.md
+- Overview/navigation verification: M8B-VERIFICATION.md
+- Latest Projects/forms polish and live verification: M8C-VERIFICATION.md
 - Candidate review: WALKTHROUGH.md
 - Admin-only Member password reset enhancement: M7-VERIFICATION.md; candidate-reported guided checks: MANUAL-ACCEPTANCE.md
 - Representative desktop screenshot: ../output/evidence/live-dashboard.png (fictional test data, removed from the database after verification)

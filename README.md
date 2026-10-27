@@ -1,10 +1,69 @@
 # Smart Task & Project Management System
 
-A React/TypeScript and Node/Express task-management assessment prototype with PostgreSQL persistence.
+Built for the Bright Mind Ltd. Full-Stack Developer assignment by Md. Masud Rana.
+
+Smart Task brings projects, assignments and deadlines into one shared workspace. Administrators organize work, while team members track and update the tasks assigned to them. The application pairs a responsive React interface with an Express API and PostgreSQL persistence.
 
 The React interface and API implement registration/login/logout, PostgreSQL sessions, Admin/Team Member permissions, project/task CRUD, filtering/search/pagination, dashboard/progress charts and in-app overdue notifications. All six optional feature categories are implemented. See the [acceptance audit](docs/ACCEPTANCE-AUDIT.md) and verification records for tested coverage and limitations.
 
 **Live demo:** https://smart-task-project-management-syste-delta.vercel.app. Public registration creates a Team Member; evaluator Admin credentials are shared privately. Fictional demonstration data may be present. [Submission index and deliverables](docs/SUBMISSION.md).
+
+## Contents
+
+1. [Features and access](#features-and-access)
+2. [Technology stack](#technology-stack)
+3. [Evaluator walkthrough](#evaluator-walkthrough)
+4. [Prerequisites](#prerequisites)
+5. [Install and run](#install-and-run)
+6. [Database configuration](#database-configuration)
+7. [Admin and fictional sample data](#admin-and-fictional-sample-data)
+8. [Checks](#checks)
+9. [API documentation](#api-documentation)
+10. [Local containers](#local-containers)
+11. [Project layout](#project-layout)
+12. [Delivery and attribution](#delivery-and-attribution)
+
+## Features and access
+
+| Area           | Included behavior                                                                            |
+| -------------- | -------------------------------------------------------------------------------------------- |
+| Authentication | Registration, login/logout, PostgreSQL-backed cookie sessions                                |
+| Projects       | Create, view, edit and delete; nonempty projects are protected from deletion                 |
+| Tasks          | Project and assignee, title/description, three statuses, three priorities, calendar deadline |
+| Task discovery | Combined project/status/priority/assignee filters, text search, sorting and pagination       |
+| Overview       | Project/task totals, completed/pending/overdue counts, progress charts                       |
+| Notifications  | Persistent in-app overdue notices with read/unread state                                     |
+| Administration | Server-enforced permissions and Admin-assisted Member password reset                         |
+| Delivery       | Automated tests, Docker Compose, GitHub CI and hosted demo                                   |
+
+Admins manage projects and tasks. Members see shared work and can change only the status of their own assigned tasks. Public registration never grants Admin access. Deadlines run through the end of the selected calendar day in Asia/Dhaka; completed tasks are excluded from overdue counts.
+
+## Technology stack
+
+| Layer                          | Technologies                                                        |
+| ------------------------------ | ------------------------------------------------------------------- |
+| Interface                      | React 19, TypeScript, Vite, React Router, CSS                       |
+| Data and forms                 | TanStack Query, React Hook Form, Zod, Recharts                      |
+| API                            | Node.js 24, Express 5, TypeScript, Prisma                           |
+| Persistence and authentication | PostgreSQL 17, pg, database-backed sessions, salted scrypt          |
+| Verification                   | Vitest, Testing Library, Supertest, Playwright, ESLint, Prettier    |
+| Delivery                       | Git/GitHub, GitHub Actions, Docker/Compose, Vercel Hobby, Neon Free |
+
+Exact versions and dependency resolution are recorded in package-lock.json.
+
+## Evaluator walkthrough
+
+1. Open the live demo and sign in with the privately supplied Admin account.
+2. Review Overview totals and project progress. Open Projects and create a clearly named evaluation project.
+3. Create a task in that project, assign it to the supplied Member and choose a status, priority and deadline.
+4. Test combined filters, search, sorting and pagination on Tasks. Refresh to check filter persistence.
+5. In a separate private browser window, sign in as the Member. Verify visibility of shared work and update the assigned task's status; administrative controls are unavailable.
+6. Set an incomplete task's due date to a previous day as Admin. Check overdue totals and relevant notifications, then mark a notice read. Completing the task removes it from current overdue results.
+7. Try an empty required field and an attempt to delete a project that still has tasks. Confirm the application explains both cases.
+8. For the optional reset enhancement, use a separate disposable Member account. An Admin reset revokes that member's existing sessions; avoid changing the supplied evaluator account during the general walkthrough.
+9. Review the source, OpenAPI specification, migrations and test records linked below. Remove only the evaluation data you created when finished.
+
+Use browser developer tools to review API requests, or import the live OpenAPI JSON into a compatible API client. A short review can follow the request path: React form → API client → Express handler/security → application service → Prisma → PostgreSQL.
 
 ## Prerequisites
 
@@ -14,7 +73,14 @@ The React interface and API implement registration/login/logout, PostgreSQL sess
 
 ## Install and run
 
-From the repository root:
+Clone the repository, then work from its root:
+
+```sh
+git clone https://github.com/masud-rana-pro/smart-task-project-management-system.git
+cd smart-task-project-management-system
+```
+
+Install the locked dependencies:
 
 ```sh
 npm ci
